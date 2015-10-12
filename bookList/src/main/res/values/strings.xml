@@ -6,4 +6,7 @@
     <string name="action_search">Recherche</string>
     <string name="action_scan">Scan</string>
     <string name="title_activity_book_details">BookDetailsActivity</string>
+    <string name="book_summary">Résumé :</string>
+    <string name="read">Lu</string>
+    <string name="own">J\'ai</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import mobop.booklist.app.data.generic.IBook;
 
@@ -21,8 +22,22 @@ public class BookDetailsActivity extends Activity {
         Intent intent = getIntent();
         IBook book = (IBook)intent.getSerializableExtra(BookListActivity.EXTRA_BOOK);
 
-        TextView test = (TextView) findViewById(R.id.hello);
-        test.setText(book.getName());
+        TextView bookName = (TextView) findViewById(R.id.book_detail_name);
+        bookName.setText(book.getName());
+
+        TextView bookGenre = (TextView) findViewById(R.id.book_detail_genre);
+        bookGenre.setText(book.getGenre());
+
+        TextView bookRating = (TextView) findViewById(R.id.book_detail_ratings);
+        bookRating.setText(""+book.getRatings());
+
+        TextView bookPages = (TextView) findViewById(R.id.book_detail_pages);
+        bookPages.setText(book.getPages() + " pages");
+
+        //TODO decommenter quand les images marcheront
+       // ImageView bookImage = (ImageView) findViewById(R.id.book_detail_image);
+       // bookImage.setImageBitmap(book.getImage());
+
     }
 
 
