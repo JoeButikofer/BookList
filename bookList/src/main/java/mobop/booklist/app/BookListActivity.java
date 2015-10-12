@@ -2,12 +2,15 @@ package mobop.booklist.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.*;
+import android.support.v7.widget.Toolbar;
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.database.Book;
 import mobop.booklist.app.data.generic.IBook;
@@ -20,6 +23,8 @@ public class BookListActivity extends Activity {
 
 
     private List<IBook> listBook;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
 
     public final static String EXTRA_BOOK = "mobop.booklist.app.BOOK";
 
@@ -27,6 +32,9 @@ public class BookListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+
+        //Navigation Drawer
+        setupNavigationDrawer();
 
         listBook = new ArrayList<IBook>();
 
@@ -65,6 +73,70 @@ public class BookListActivity extends Activity {
         });
     }
 
+    private void setupNavigationDrawer() {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.action_bar);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                drawerLayout,         /* DrawerLayout object */
+                toolbar,
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+        ) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(R.string.title_activity_book_list);
+                invalidateOptionsMenu();
+                syncState();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(R.string.navigation_drawer_title);
+                invalidateOptionsMenu();
+                syncState();
+            }
+        };
+
+        drawerToggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+
+        // Set the drawer toggle as the DrawerListener
+        drawerLayout.setDrawerListener(drawerToggle);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        String[] listArray = {getResources().getString(R.string.list_wish),getResources().getString(R.string.list_library),getResources().getString(R.string.list_to_read),getResources().getString(R.string.list_favorites) };
+        ListAdapter drawerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listArray);
+        ListView drawerListView = (ListView) findViewById(R.id.left_drawer);
+        drawerListView.setAdapter(drawerListAdapter);
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // This to ensure the navigation icon is displayed as
+        // burger instead of arrow.
+        // Call syncState() from your Activity's onPostCreate
+        // to synchronize the indicator with the state of the
+        // linked DrawerLayout after onRestoreInstanceState
+        // has occurred.
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // This method should always be called by your Activity's
+        // onConfigurationChanged method.
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -78,6 +150,16 @@ public class BookListActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        // This handle among other things open & close the drawer
+        // when the navigation icon(burger/arrow) is clicked on.
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        // Handle other action bar items...
         switch (item.getItemId()) {
             case R.id.action_settings:
 
