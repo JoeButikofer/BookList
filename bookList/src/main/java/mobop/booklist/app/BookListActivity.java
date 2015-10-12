@@ -5,14 +5,41 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import mobop.booklist.app.adapter.BookAdapter;
+import mobop.booklist.app.data.database.Book;
+import mobop.booklist.app.data.generic.IBook;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BookListActivity extends Activity {
+
+
+    private List<IBook> listBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+
+        listBook = new ArrayList<IBook>();
+
+        //TODO REMOVE THIS
+        //TEST
+        IBook testBook = new Book();
+        testBook.setName("A really good book");
+        testBook.setGenre("action");
+        testBook.setPages(42);
+        testBook.setRatings(12);
+
+        listBook.add(testBook);
+        //TEST
+
+        BookAdapter adapter = new BookAdapter(this, listBook);
+
+        ListView listViewBook = (ListView) findViewById(R.id.list_books);
+        listViewBook.setAdapter(adapter);
     }
 
     @Override
