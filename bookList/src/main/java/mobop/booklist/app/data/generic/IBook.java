@@ -1,8 +1,11 @@
 package mobop.booklist.app.data.generic;
 
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 
-public interface IBook {
+import java.io.Serializable;
+
+public interface IBook extends Serializable { //Parcelable would be more efficient but we don't need it for just one object
 
     public String getName();
     public void setName(String value);

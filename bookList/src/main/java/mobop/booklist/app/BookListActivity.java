@@ -1,9 +1,12 @@
 package mobop.booklist.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.database.Book;
@@ -17,6 +20,8 @@ public class BookListActivity extends Activity {
 
 
     private List<IBook> listBook;
+
+    public final static String EXTRA_BOOK = "mobop.booklist.app.BOOK";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,24 @@ public class BookListActivity extends Activity {
 
         ListView listViewBook = (ListView) findViewById(R.id.list_books);
         listViewBook.setAdapter(adapter);
+        listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                IBook selectedBook = listBook.get(position);
+                Intent intent = new Intent(BookListActivity.this, BookDetailsActivity.class);
+                intent.putExtra(EXTRA_BOOK, selectedBook);
+                startActivity(intent);
+            }
+        });
+        listViewBook.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                IBook selectedBook = listBook.get(position);
+
+                //TODO Long click : add/remove from lists
+                return true; //true if the callback consumed the long click, false otherwise
+            }
+        });
     }
 
     @Override
