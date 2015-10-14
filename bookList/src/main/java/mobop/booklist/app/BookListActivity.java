@@ -102,8 +102,6 @@ public class BookListActivity extends Activity {
             }
         };
 
-        drawerToggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
-
         // Set the drawer toggle as the DrawerListener
         drawerLayout.setDrawerListener(drawerToggle);
 
@@ -111,7 +109,7 @@ public class BookListActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         String[] listArray = {getResources().getString(R.string.list_wish),getResources().getString(R.string.list_library),getResources().getString(R.string.list_to_read),getResources().getString(R.string.list_favorites) };
-        ListAdapter drawerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listArray);
+        ListAdapter drawerListAdapter = new ArrayAdapter<String>(this, R.layout.view_list_drawer, listArray);
         ListView drawerListView = (ListView) findViewById(R.id.left_drawer);
         drawerListView.setAdapter(drawerListAdapter);
 
