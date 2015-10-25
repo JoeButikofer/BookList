@@ -22,7 +22,7 @@ public class Book implements IBook {
         this.genre = item.getGenre();
         this.pages = item.getPages();
         this.ratings = item.getRatings();
-        this.image = item.getImage();
+        //this.image = item.getImage();
         if (item instanceof Book) {
             Book book = (Book) item;
             this.dbId = book.dbId;

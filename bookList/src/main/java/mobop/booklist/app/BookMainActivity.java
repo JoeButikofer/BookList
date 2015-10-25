@@ -1,117 +1,67 @@
 package mobop.booklist.app;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.*;
 import android.support.v7.widget.Toolbar;
-import com.android.volley.*;
+import android.util.Log;
+import android.view.*;
+import android.widget.*;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import mobop.booklist.app.adapter.BookAdapter;
-import mobop.booklist.app.data.database.Book;
-import mobop.booklist.app.data.database.BookManager;
-import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.task.ParseJSONTask;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import mobop.booklist.app.menu.MenuAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import mobop.booklist.app.data.generic.IManager;
+public class BookMainActivity extends Activity {
 
-
-public class BookListActivity extends Activity {
-
-
-    private List<IBook> listBook;
-    private DrawerLayout drawerLayout;
+    private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private RequestQueue queue;
-    private BookAdapter bookAdapter;
+    private ListView mDrawerListView;
 
-    public final static String EXTRA_BOOK = "mobop.booklist.app.BOOK";
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+    private RequestQueue queue;
+    private MenuAdapter mDrawerMenuAdapter;
+
+    private Fragment[] mFragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_list);
+        setContentView(R.layout.activity_book_main);
 
-        //Navigation Drawer
-        setupNavigationDrawer();
-
-        listBook = new ArrayList<IBook>();
-
-        //TODO REMOVE THIS
-        //TEST
-        IBook testBook = new Book();
-        testBook.setName("A really good book");
-        testBook.setGenre("action");
-        testBook.setPages(42);
-        testBook.setRatings(12);
-
-        listBook.add(testBook);
-        //TEST
 
         // Instantiate the RequestQueue.
         queue = Volley.newRequestQueue(this);
 
-        bookAdapter = new BookAdapter(this, listBook);
+        //Navigation Drawer
+        setupNavigationDrawer();
 
-        IManager<IBook> databaseBookManager = new BookManager(this);
-        databaseBookManager.add(testBook);
-        testBook.setPages(2);
-        databaseBookManager.update(testBook);
-        listBook = databaseBookManager.list();
+        mFragments = new Fragment[mDrawerMenuAdapter.getCount()];
 
-        //BookAdapter adapter = new BookAdapter(this, listBook);
-
-        ListView listViewBook = (ListView) findViewById(R.id.list_books);
-        listViewBook.setAdapter(bookAdapter);
-        listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IBook selectedBook = listBook.get(position);
-                Intent intent = new Intent(BookListActivity.this, BookDetailsActivity.class);
-                intent.putExtra(EXTRA_BOOK, selectedBook);
-                startActivity(intent);
-            }
-        });
-        listViewBook.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                IBook selectedBook = listBook.get(position);
-
-                //TODO Long click : add/remove from lists
-                return true; //true if the callback consumed the long click, false otherwise
-            }
-        });
+        selectItem(0);
     }
 
     private void setupNavigationDrawer() {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.action_bar);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
-                drawerLayout,         /* DrawerLayout object */
+                mDrawerLayout,         /* DrawerLayout object */
                 toolbar,
                 R.string.drawer_open,  /* "open drawer" description */
                 R.string.drawer_close  /* "close drawer" description */
@@ -135,18 +85,45 @@ public class BookListActivity extends Activity {
         };
 
         // Set the drawer toggle as the DrawerListener
-        drawerLayout.setDrawerListener(drawerToggle);
+        mDrawerLayout.setDrawerListener(drawerToggle);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        String[] listArray = {getResources().getString(R.string.list_wish),getResources().getString(R.string.list_library),getResources().getString(R.string.list_to_read),getResources().getString(R.string.list_favorites) };
-        ListAdapter drawerListAdapter = new ArrayAdapter<String>(this, R.layout.view_list_drawer, listArray);
-        ListView drawerListView = (ListView) findViewById(R.id.left_drawer);
-        drawerListView.setAdapter(drawerListAdapter);
+
+
+        mDrawerMenuAdapter = new MenuAdapter(this);
+        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
+        mDrawerListView.setAdapter(mDrawerMenuAdapter);
+        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectItem(i);
+            }
+        });
 
     }
+    private void selectItem(int position) {
+        Log.d("Book", "selectItem(" + position  + ")");
+        if (mFragments[position] == null) {
+            mFragments[position] = mDrawerMenuAdapter.getFragmentForPosition(position);
+        }
 
+
+        if (mFragments[position] != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, mFragments[position]).commit();
+
+            mDrawerListView.setItemChecked(position, true);
+            mDrawerListView.setSelection(position);
+            getActionBar().setTitle(mDrawerMenuAdapter.getTextForPosition(position));
+            mDrawerLayout.closeDrawer(mDrawerListView);
+
+        } else {
+            Log.e("MainActivity", "Error in creating fragment");
+        }
+        Log.d("Book", "end selectItem(" + position  + ")");
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -169,6 +146,7 @@ public class BookListActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_list, menu);
 
@@ -186,7 +164,7 @@ public class BookListActivity extends Activity {
                     public void onResponse(JSONObject response) {
                         //TODO parser la reponse et peupler la liste de livre
 
-                        listBook.clear();
+                        //listBook.clear();
 
                         //ObjectMapper mapper = new ObjectMapper();
 
@@ -197,14 +175,15 @@ public class BookListActivity extends Activity {
                             for(int i=0;i<volumes.length();i++)
                             {
                                 //parse and add each book in the list
-                               // mobop.booklist.app.data.api.Book book = mapper.readValue(((JSONObject) volumes.get(i)).toString(), mobop.booklist.app.data.api.Book.class);
-                               // listBook.add(book);
-                                new ParseJSONTask(listBook, bookAdapter).execute(((JSONObject) volumes.get(i)).toString());
+                                // mobop.booklist.app.data.api.Book book = mapper.readValue(((JSONObject) volumes.get(i)).toString(), mobop.booklist.app.data.api.Book.class);
+                                // listBook.add(book);
+                                //TODO remove comment
+                                // new ParseJSONTask(listBook, bookAdapter).execute(((JSONObject) volumes.get(i)).toString());
 
                             }
 
                             //Update the list view
-                           //bookAdapter.notifyDataSetChanged();
+                            //bookAdapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -234,7 +213,6 @@ public class BookListActivity extends Activity {
 
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -275,4 +253,5 @@ public class BookListActivity extends Activity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 }

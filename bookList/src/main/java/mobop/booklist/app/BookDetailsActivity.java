@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.task.LoadImageTask;
 
 
 public class BookDetailsActivity extends Activity {
@@ -21,7 +19,7 @@ public class BookDetailsActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        IBook book = (IBook)intent.getSerializableExtra(BookListActivity.EXTRA_BOOK);
+        IBook book = (IBook)intent.getSerializableExtra(BookListFragment.EXTRA_BOOK);
 
         TextView bookName = (TextView) findViewById(R.id.book_detail_name);
         bookName.setText(book.getName());
