@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import mobop.booklist.app.R;
 import mobop.booklist.app.data.generic.IBook;
+import mobop.booklist.app.task.LoadImageTask;
 
 import java.util.List;
 
@@ -65,7 +66,10 @@ public class BookAdapter extends BaseAdapter
         TextView bookRatings = (TextView) layoutItem.findViewById(R.id.book_ratings);
 
         //Fills it
-        bookImage.setImageBitmap(listBook.get(position).getImage());
+
+        //asynchronously load the image from file or url
+        new LoadImageTask(bookImage, 80,80).execute(listBook.get(position).getImagePath()); //TODO voir les valeurs de taille de l'image
+
         bookName.setText(listBook.get(position).getName());
         bookGenre.setText(listBook.get(position).getGenre());
         bookPages.setText(listBook.get(position).getPages()+ " pages");

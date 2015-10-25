@@ -11,10 +11,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.support.v7.widget.Toolbar;
+import com.android.volley.*;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.Volley;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.database.Book;
 import mobop.booklist.app.data.generic.IBook;
+import mobop.booklist.app.task.ParseJSONTask;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +38,11 @@ public class BookListActivity extends Activity {
     private List<IBook> listBook;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private RequestQueue queue;
+    private BookAdapter bookAdapter;
 
     public final static String EXTRA_BOOK = "mobop.booklist.app.BOOK";
+    private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +65,13 @@ public class BookListActivity extends Activity {
         listBook.add(testBook);
         //TEST
 
-        BookAdapter adapter = new BookAdapter(this, listBook);
+        // Instantiate the RequestQueue.
+        queue = Volley.newRequestQueue(this);
+
+        bookAdapter = new BookAdapter(this, listBook);
 
         ListView listViewBook = (ListView) findViewById(R.id.list_books);
-        listViewBook.setAdapter(adapter);
+        listViewBook.setAdapter(bookAdapter);
         listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -139,6 +158,66 @@ public class BookListActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_list, menu);
+
+        //Search view listener setup
+        SearchView searchView = (SearchView) ((MenuItem )menu.findItem(R.id.action_search)).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                Toast.makeText(getApplicationContext(),
+                        "search...", Toast.LENGTH_SHORT).show();
+
+                JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL+query, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //TODO parser la reponse et peupler la liste de livre
+
+                        listBook.clear();
+
+                        //ObjectMapper mapper = new ObjectMapper();
+
+                        try {
+                            //all the books returned
+                            JSONArray volumes = response.getJSONArray("items");
+
+                            for(int i=0;i<volumes.length();i++)
+                            {
+                                //parse and add each book in the list
+                               // mobop.booklist.app.data.api.Book book = mapper.readValue(((JSONObject) volumes.get(i)).toString(), mobop.booklist.app.data.api.Book.class);
+                               // listBook.add(book);
+                                new ParseJSONTask(listBook, bookAdapter).execute(((JSONObject) volumes.get(i)).toString());
+
+                            }
+
+                            //Update the list view
+                           //bookAdapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //TODO voir quoi faire
+                        Toast.makeText(getApplicationContext(),
+                                "error : " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                queue.add(jsonRequest);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //TODO suggestions ???
+                return false;
+            }
+        });
 
         return true;
     }

@@ -7,8 +7,8 @@ public class Book implements IBook {
     private String name;
     private String genre;
     private int pages;
-    private int ratings;
-    private Bitmap image;
+    private double ratings;
+    private String imagePath;
 
     @Override
     public String getName() {
@@ -41,22 +41,22 @@ public class Book implements IBook {
     }
 
     @Override
-    public int getRatings() {
+    public double getRatings() {
         return ratings;
     }
 
     @Override
-    public void setRatings(int value) {
+    public void setRatings(double value) {
         ratings = value;
     }
 
     @Override
-    public Bitmap getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
     @Override
-    public void setImage(Bitmap value) {
-        image = Bitmap.createBitmap(value);
+    public void setImagePath(String value) {
+        imagePath = value;
     }
 }

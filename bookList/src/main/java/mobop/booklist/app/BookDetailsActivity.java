@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import mobop.booklist.app.data.generic.IBook;
+import mobop.booklist.app.task.LoadImageTask;
 
 
 public class BookDetailsActivity extends Activity {
@@ -35,8 +36,8 @@ public class BookDetailsActivity extends Activity {
         bookPages.setText(book.getPages() + " pages");
 
         //TODO decommenter quand les images marcheront
-       // ImageView bookImage = (ImageView) findViewById(R.id.book_detail_image);
-       // bookImage.setImageBitmap(book.getImage());
+        //ImageView bookImage = (ImageView) findViewById(R.id.book_detail_image);
+        //new LoadImageTask(bookImage, 80,80).execute(book.getImagePath()); //TODO voir les valeurs de taille de l'image
 
     }
 

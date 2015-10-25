@@ -16,9 +16,9 @@ public interface IBook extends Serializable { //Parcelable would be more efficie
     public int getPages();
     public void setPages(int value);
 
-    public int getRatings(); //TODO pour l'instant, c'est un entier, a voir
-    public void setRatings(int value);
+    public double getRatings();
+    public void setRatings(double value);
 
-    public Bitmap getImage();
-    public void setImage(Bitmap value);
+    public String getImagePath();
+    public void setImagePath(String value);
 }
