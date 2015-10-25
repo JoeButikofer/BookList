@@ -10,6 +10,32 @@ public class Book implements IBook {
     private double ratings;
     private String imagePath;
 
+    private int dbId;
+
+    public Book() {
+        dbId = -1;
+    }
+
+    public Book(IBook item) {
+        this();
+        this.name = item.getName();
+        this.genre = item.getGenre();
+        this.pages = item.getPages();
+        this.ratings = item.getRatings();
+        this.image = item.getImage();
+        if (item instanceof Book) {
+            Book book = (Book) item;
+            this.dbId = book.dbId;
+        }
+    }
+
+    public int getDbId() {
+        return dbId;
+    }
+    public void setDbId(int value) {
+        this.dbId = value;
+    }
+
     @Override
     public String getName() {
         return name;

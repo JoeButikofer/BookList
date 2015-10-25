@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.database.Book;
+import mobop.booklist.app.data.database.BookManager;
 import mobop.booklist.app.data.generic.IBook;
 import mobop.booklist.app.task.ParseJSONTask;
 import org.json.JSONArray;
@@ -30,6 +32,9 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import mobop.booklist.app.data.generic.IManager;
 
 
 public class BookListActivity extends Activity {
@@ -69,6 +74,14 @@ public class BookListActivity extends Activity {
         queue = Volley.newRequestQueue(this);
 
         bookAdapter = new BookAdapter(this, listBook);
+
+        IManager<IBook> databaseBookManager = new BookManager(this);
+        databaseBookManager.add(testBook);
+        testBook.setPages(2);
+        databaseBookManager.update(testBook);
+        listBook = databaseBookManager.list();
+
+        //BookAdapter adapter = new BookAdapter(this, listBook);
 
         ListView listViewBook = (ListView) findViewById(R.id.list_books);
         listViewBook.setAdapter(bookAdapter);
@@ -243,9 +256,23 @@ public class BookListActivity extends Activity {
                 return true;
             case R.id.action_scan:
                 //TODO QR code scan
+                IntentIntegrator integrator = new IntentIntegrator(this);
+
+                integrator.initiateScan();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null) {
+            scanResult.getFormatName();
+            Log.d("QRCODE", "'" + scanResult.getContents() + "' '" + scanResult.toString()+ "'");
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
