@@ -70,7 +70,18 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     public int getDrawableForPosition(int position) {
-        return android.R.drawable.ic_menu_compass;
+        switch (position) {
+            case 0:
+                return R.drawable.ic_book_open;
+            case 1:
+                return R.drawable.ic_tray;
+            case 2:
+                return R.drawable.ic_glasses;
+            case 3:
+                return R.drawable.ic_star;
+            default:
+                return 0;
+        }
     }
     public Fragment getFragmentForPosition(int position) {
         return new BookListFragment();
