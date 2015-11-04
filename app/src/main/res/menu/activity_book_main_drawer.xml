@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_wish"
+            android:icon="@drawable/ic_book_open"
+            android:title="@string/list_wish" />
+        <item
+            android:id="@+id/nav_library"
+            android:icon="@drawable/ic_tray"
+            android:title="@string/list_library" />
+        <item
+            android:id="@+id/nav_to_read"
+            android:icon="@drawable/ic_glasses"
+            android:title="@string/list_to_read" />
+        <item
+            android:id="@+id/nav_nav_favorites"
+            android:icon="@drawable/ic_star"
+            android:title="@string/list_favorites" />
+    </group>
+
+    <item android:title="Communicate TODO">
+        <menu>
+            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
+                android:title="Share TODO" />
+            <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
+                android:title="Send TODO" />
+        </menu>
+    </item>
+    -->
+
+</menu>
