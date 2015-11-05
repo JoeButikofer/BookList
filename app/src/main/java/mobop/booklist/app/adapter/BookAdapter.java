@@ -70,7 +70,7 @@ public class BookAdapter extends BaseAdapter
 
         //Fills it
 
-        // Load image with Picasso http://square.github.io/picasso/
+        // Load image with Picasso : http://square.github.io/picasso/
         Picasso.with(context).load(listBook.get(position).getImagePath()).into(bookImage);
 
         bookName.setText(listBook.get(position).getName());
