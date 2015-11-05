@@ -1,6 +1,7 @@
 package mobop.booklist.app.data.database;
 
 import android.graphics.Bitmap;
+
 import mobop.booklist.app.data.generic.IBook;
 
 public class Book implements IBook {
@@ -9,6 +10,7 @@ public class Book implements IBook {
     private int pages;
     private double ratings;
     private String imagePath;
+    private Bitmap image;
 
     private int dbId;
 
@@ -32,6 +34,7 @@ public class Book implements IBook {
     public int getDbId() {
         return dbId;
     }
+
     public void setDbId(int value) {
         this.dbId = value;
     }
@@ -43,7 +46,7 @@ public class Book implements IBook {
 
     @Override
     public void setName(String value) {
-       name = value;
+        name = value;
     }
 
     @Override
@@ -84,5 +87,15 @@ public class Book implements IBook {
     @Override
     public void setImagePath(String value) {
         imagePath = value;
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return image;
+    }
+
+    @Override
+    public void setImage(Bitmap value) {
+        image = value;
     }
 }

@@ -30,15 +30,16 @@ import mobop.booklist.app.data.api.SearchManager;
 public class BookMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RequestQueue queue;
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
     private BookListFragment bookListFragment;
     private SearchManager searchManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Queue.getInstance(this);
         bookListFragment = new BookListFragment();
         setContentView(R.layout.activity_book_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,7 +68,6 @@ public class BookMainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.content_frame, bookListFragment).commit();
         //loadFragment(R.id.nav_wish);
 
-        queue = Volley.newRequestQueue(this);
     }
 
     @Override
@@ -86,11 +86,7 @@ public class BookMainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.book_main, menu);
         //Search view listener setup
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        View actionView = item.getActionView();
-        SearchView sv = (SearchView) actionView;
-        sv.setOnQueryTextListener(null);
-        SearchView searchView = (SearchView) ((MenuItem )menu.findItem(R.id.action_search)).getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -127,10 +123,8 @@ public class BookMainActivity extends AppCompatActivity
 
                 return true;
             case R.id.action_scan:
-                //TODO QR code scan
                 IntentIntegrator integrator = new IntentIntegrator(this);
-
-                integrator.initiateScan();
+                integrator.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
                 return true;
         }
 
