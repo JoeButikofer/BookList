@@ -19,28 +19,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.api.SearchManager;
+import mobop.booklist.app.data.database.BookManager;
+import mobop.booklist.app.data.generic.IBook;
+import mobop.booklist.app.data.generic.IManager;
 
 public class BookMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
-    private BookListFragment bookListFragment;
-    private SearchManager searchManager;
+    private BookListFragment mBookListFragment;
+    private SearchManager mSearchManager;
+    private IManager<IBook> databaseManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Queue.getInstance(this);
-        bookListFragment = new BookListFragment();
+        mBookListFragment = new BookListFragment();
         setContentView(R.layout.activity_book_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,7 +56,10 @@ public class BookMainActivity extends AppCompatActivity
             }
         });
 
-        searchManager = new SearchManager(this);
+        mSearchManager = new SearchManager(this);
+        databaseManager = new BookManager(this);
+
+        mBookListFragment.setManager(databaseManager);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -64,10 +69,9 @@ public class BookMainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, bookListFragment).commit();
-        //loadFragment(R.id.nav_wish);
 
+        setFragment(mBookListFragment);
+        loadMenu(R.id.nav_wish);
     }
 
     @Override
@@ -94,9 +98,9 @@ public class BookMainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),
                         "search...", Toast.LENGTH_SHORT).show();
 
-                BookAdapter bookAdapter = searchManager.search(query);
+                mSearchManager.search(query);
 
-                changeBookList(bookAdapter);
+                changeBookList(mSearchManager);
 
                 return false;
             }
@@ -131,36 +135,33 @@ public class BookMainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /*private void loadFragment(int menu_id) {
-        Fragment fragment;
-        if (mFragments.containsKey(menu_id)) {
-            fragment = mFragments.get(menu_id);
-        } else {
-            if (menu_id == R.id.nav_wish) {
-                // Handle the camera action
-            } else if (menu_id == R.id.nav_library) {
+    private void loadMenu(int menu_id) {
+        switch (menu_id) {
+            case R.id.nav_wish:
 
-            } else if (menu_id == R.id.nav_to_read) {
+                break;
+            case R.id.nav_library:
 
-            } else if (menu_id == R.id.nav_nav_favorites) {
+                break;
+            case R.id.nav_to_read:
 
-            } else if (menu_id == R.id.nav_share) {
+                break;
+            case R.id.nav_nav_favorites:
 
-            } else if (menu_id == R.id.nav_send) {
+                break;
+            case R.id.nav_share:
 
-            }
-            Log.d("Book", "new fragment for " + menu_id);
-            fragment = new BookListFragment();
-            mFragments.put(menu_id, fragment);
+                break;
+            case R.id.nav_send:
+
+                break;
+            default:
+                throw new IllegalStateException("ID " + menu_id + " unknown !");
         }
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-    }*/
+    }
 
-    private void changeBookList(BookAdapter bookAdapter)
-    {
-        bookListFragment.setBookAdapter(bookAdapter);
-
+    private void changeBookList(IManager<IBook> manager) {
+        mBookListFragment.setManager(manager);
     }
 
     @Override
@@ -174,11 +175,15 @@ public class BookMainActivity extends AppCompatActivity
         }
     }
 
+    private void setFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        //loadFragment(item.getItemId());
+        loadMenu(item.getItemId());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

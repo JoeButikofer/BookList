@@ -2,6 +2,7 @@ package mobop.booklist.app.data.api;
 
 import android.content.Context;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -13,9 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import mobop.booklist.app.Queue;
 import mobop.booklist.app.adapter.BookAdapter;
+import mobop.booklist.app.data.generic.IAdatper;
 import mobop.booklist.app.data.generic.IBook;
 import mobop.booklist.app.data.generic.IManager;
 import mobop.booklist.app.task.ParseJSONTask;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,35 +27,32 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SearchManager //implements IManager<IBook>
-{
+public class SearchManager implements IManager<IBook> {
 
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+    private final BookAdapter mBookAdapter;
     private List<IBook> listBook;
     private Context context;
 
-    public SearchManager(Context context)
-    {
+    public SearchManager(Context context) {
         this.context = context;
 
-        // Instantiate the RequestQueue.
-        this.listBook = new LinkedList<>();
+        // Instantiate
+        listBook = new LinkedList<>();
+        mBookAdapter = new BookAdapter(context, listBook); //TODO voir si le final ne fout pas la merde
     }
 
-    /*
     @Override
     public List<IBook> list() {
         return listBook;
     }
-    */
 
-   // @Override
-    public BookAdapter search(String text) {
+    @Override
+    public List<IBook> search(String text) {
 
         listBook.clear();
-        final BookAdapter bookAdapter = new BookAdapter(context, listBook); //TODO voir si le final ne fout pas la merde
 
-        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL+text, new Response.Listener<JSONObject>() {
+        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + text, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -62,10 +62,9 @@ public class SearchManager //implements IManager<IBook>
                     //all the books returned
                     JSONArray volumes = response.getJSONArray("items");
 
-                    for(int i=0;i<volumes.length();i++)
-                    {
+                    for (int i = 0; i < volumes.length(); i++) {
                         //parse and add each book in the list
-                        new ParseJSONTask(listBook, bookAdapter).execute(((JSONObject) volumes.get(i)).toString());
+                        new ParseJSONTask(listBook, mBookAdapter).execute(((JSONObject) volumes.get(i)).toString());
                     }
 
                 } catch (JSONException e) {
@@ -81,11 +80,15 @@ public class SearchManager //implements IManager<IBook>
         });
 
         Queue.getInstance(context).add(jsonRequest);
-
-        return bookAdapter;
+        return listBook;
     }
 
-   /* @Override
+    @Override
+    public IAdatper<IBook> adapter() {
+        return mBookAdapter;
+    }
+
+    @Override
     public Book add(IBook item) {
         //TODO throw exception
         return null;
@@ -94,5 +97,5 @@ public class SearchManager //implements IManager<IBook>
     @Override
     public void update(IBook item) {
         //TODO throw exception
-    }*/
+    }
 }

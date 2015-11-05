@@ -12,13 +12,14 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import mobop.booklist.app.R;
+import mobop.booklist.app.data.generic.IAdatper;
 import mobop.booklist.app.data.generic.IBook;
 import mobop.booklist.app.task.LoadImageTask;
 
 import java.util.List;
 
 //voir http://mickael-lt.developpez.com/tutoriels/android/personnaliser-listview/
-public class BookAdapter extends BaseAdapter
+public class BookAdapter extends BaseAdapter implements IAdatper<IBook>
 {
     private List<IBook> listBook;
 
@@ -38,7 +39,7 @@ public class BookAdapter extends BaseAdapter
     }
 
     @Override
-    public Object getItem(int position) {
+    public IBook getItem(int position) {
         return listBook.get(position);
     }
 
