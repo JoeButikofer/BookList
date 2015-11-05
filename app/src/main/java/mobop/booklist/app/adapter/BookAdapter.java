@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import mobop.booklist.app.R;
 import mobop.booklist.app.data.generic.IBook;
 import mobop.booklist.app.task.LoadImageTask;
@@ -67,8 +70,8 @@ public class BookAdapter extends BaseAdapter
 
         //Fills it
 
-        //asynchronously load the image from file or url
-        new LoadImageTask(bookImage, 80,80).execute(listBook.get(position).getImagePath()); //TODO voir les valeurs de taille de l'image
+        // Load image with Picasso http://square.github.io/picasso/
+        Picasso.with(context).load(listBook.get(position).getImagePath()).into(bookImage);
 
         bookName.setText(listBook.get(position).getName());
         bookGenre.setText(listBook.get(position).getGenre());

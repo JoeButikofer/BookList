@@ -19,22 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import mobop.booklist.app.adapter.BookAdapter;
+import mobop.booklist.app.data.api.SearchManager;
 
 public class BookMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,12 +33,13 @@ public class BookMainActivity extends AppCompatActivity
     private RequestQueue queue;
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
-    private Map<Integer, Fragment> mFragments;
+    private BookListFragment bookListFragment;
+    private SearchManager searchManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFragments = new HashMap<>();
+        bookListFragment = new BookListFragment();
         setContentView(R.layout.activity_book_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +53,8 @@ public class BookMainActivity extends AppCompatActivity
             }
         });
 
+        searchManager = new SearchManager(this);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -69,7 +63,9 @@ public class BookMainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        loadFragment(R.id.nav_wish);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, bookListFragment).commit();
+        //loadFragment(R.id.nav_wish);
 
         queue = Volley.newRequestQueue(this);
     }
@@ -102,46 +98,9 @@ public class BookMainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),
                         "search...", Toast.LENGTH_SHORT).show();
 
-                JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + query, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //TODO parser la reponse et peupler la liste de livre
+                BookAdapter bookAdapter = searchManager.search(query);
 
-                        //listBook.clear();
-
-                        //ObjectMapper mapper = new ObjectMapper();
-
-                        try {
-                            //all the books returned
-                            JSONArray volumes = response.getJSONArray("items");
-
-                            for (int i = 0; i < volumes.length(); i++) {
-                                //parse and add each book in the list
-                                // mobop.booklist.app.data.api.Book book = mapper.readValue(((JSONObject) volumes.get(i)).toString(), mobop.booklist.app.data.api.Book.class);
-                                // listBook.add(book);
-                                //TODO remove comment
-                                // new ParseJSONTask(listBook, bookAdapter).execute(((JSONObject) volumes.get(i)).toString());
-
-                            }
-
-                            //Update the list view
-                            //bookAdapter.notifyDataSetChanged();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //TODO voir quoi faire
-                        Toast.makeText(getApplicationContext(),
-                                "error : " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                queue.add(jsonRequest);
+                changeBookList(bookAdapter);
 
                 return false;
             }
@@ -178,7 +137,7 @@ public class BookMainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadFragment(int menu_id) {
+    /*private void loadFragment(int menu_id) {
         Fragment fragment;
         if (mFragments.containsKey(menu_id)) {
             fragment = mFragments.get(menu_id);
@@ -202,6 +161,12 @@ public class BookMainActivity extends AppCompatActivity
         }
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+    }*/
+
+    private void changeBookList(BookAdapter bookAdapter)
+    {
+        bookListFragment.setBookAdapter(bookAdapter);
+
     }
 
     @Override
@@ -219,7 +184,7 @@ public class BookMainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        loadFragment(item.getItemId());
+        //loadFragment(item.getItemId());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

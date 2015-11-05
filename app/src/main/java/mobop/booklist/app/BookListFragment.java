@@ -19,6 +19,7 @@ public class BookListFragment extends Fragment {
     public final static String EXTRA_BOOK = "mobop.booklist.app.BOOK";
 
     private BookAdapter bookAdapter;
+    private ListView listViewBook;
     IManager<IBook> databaseBookManager;
 
     @Nullable
@@ -26,22 +27,23 @@ public class BookListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         Log.d("Book", "inflate");
-        ListView listViewBook = (ListView)view.findViewById(android.R.id.list);
+        listViewBook = (ListView)view.findViewById(android.R.id.list);
         databaseBookManager = new BookManager(getActivity());
+        bookAdapter = new BookAdapter(getActivity(), databaseBookManager.list());
 
         //TODO REMOVE THIS
         //TEST
+        /*
         IBook testBook = new Book();
         testBook.setName("A really good book");
         testBook.setGenre("action");
         testBook.setPages(42);
         testBook.setRatings(12);
 
-        bookAdapter = new BookAdapter(getActivity(), databaseBookManager.list());
-
         databaseBookManager.add(testBook);
         testBook.setPages(2);
         databaseBookManager.update(testBook);
+        */
 
         listViewBook.setAdapter(bookAdapter);
         listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,6 +67,10 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
-
+    public void setBookAdapter(BookAdapter bookAdapter)
+    {
+        this.bookAdapter = bookAdapter;
+        listViewBook.setAdapter(bookAdapter);
+    }
 
 }
