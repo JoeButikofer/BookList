@@ -26,10 +26,14 @@ public class BookManager implements IManager<IBook> {
 
     private final Context mContext;
     private final DbHelper mDbHelper;
+    private final BookAdapter mAdapter;
+    private final List<IBook> mListbook;
 
     public BookManager(Context context) {
         mDbHelper = new DbHelper(context);
         mContext = context;
+        mListbook = new ArrayList<>();
+        mAdapter = new BookAdapter(mContext, mListbook);
     }
 
     public static final Table TABLE = new Table("books"
@@ -40,13 +44,8 @@ public class BookManager implements IManager<IBook> {
     );
 
     @Override
-    public List<IBook> list() {
-        return search(null);
-    }
-
-    @Override
-    public List<IBook> search(String text) {
-        List<IBook> books = new ArrayList<IBook>();
+    public void filter(String text) {
+        mListbook.clear();
         Cursor c = mDbHelper.getReadableDatabase().query(
                 TABLE.getName(),                // The table to query
                 TABLE.getColumnsNames(),        // The columns to return
@@ -64,14 +63,18 @@ public class BookManager implements IManager<IBook> {
             book.setGenre(c.getString(2));
             book.setPages(c.getInt(3));
             book.setRatings(c.getInt(4));
-            books.add(book);
+            mListbook.add(book);
         }
-        return books;
+    }
+
+    @Override
+    public void clearFilter() {
+        filter("");
     }
 
     @Override
     public IAdatper<IBook> adapter() {
-        return new BookAdapter(mContext,list());
+        return mAdapter;
     }
 
     private void toContentValue(ContentValues values, IBook item) {

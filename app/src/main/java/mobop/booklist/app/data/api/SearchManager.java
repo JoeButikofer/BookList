@@ -42,13 +42,9 @@ public class SearchManager implements IManager<IBook> {
         mBookAdapter = new BookAdapter(context, listBook); //TODO voir si le final ne fout pas la merde
     }
 
-    @Override
-    public List<IBook> list() {
-        return listBook;
-    }
 
     @Override
-    public List<IBook> search(String text) {
+    public void filter(String text) {
 
         listBook.clear();
 
@@ -80,7 +76,6 @@ public class SearchManager implements IManager<IBook> {
         });
 
         Queue.getInstance(context).add(jsonRequest);
-        return listBook;
     }
 
     @Override
@@ -97,5 +92,10 @@ public class SearchManager implements IManager<IBook> {
     @Override
     public void update(IBook item) {
         //TODO throw exception
+    }
+
+    @Override
+    public void clearFilter() {
+
     }
 }

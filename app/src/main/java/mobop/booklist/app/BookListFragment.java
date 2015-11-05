@@ -42,7 +42,8 @@ public class BookListFragment extends Fragment {
         listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IIBook selectedBook = mManager.adapter().getItem(position);                Intent intent = new Intent(getActivity(), BookDetailsActivity.class);
+                IBook selectedBook = mManager.adapter().getItem(position);
+                Intent intent = new Intent(getActivity(), BookDetailsActivity.class);
                 intent.putExtra(EXTRA_BOOK, selectedBook);
                 startActivity(intent);
             }

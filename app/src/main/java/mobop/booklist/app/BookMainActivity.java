@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.api.SearchManager;
 import mobop.booklist.app.data.database.BookManager;
 import mobop.booklist.app.data.generic.IBook;
@@ -98,7 +97,7 @@ public class BookMainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),
                         "search...", Toast.LENGTH_SHORT).show();
 
-                mSearchManager.search(query);
+                mSearchManager.filter(query);
 
                 changeBookList(mSearchManager);
 
