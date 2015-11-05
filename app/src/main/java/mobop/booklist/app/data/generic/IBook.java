@@ -21,4 +21,7 @@ public interface IBook extends Serializable { //Parcelable would be more efficie
 
     public String getImagePath();
     public void setImagePath(String value);
+
+    Bitmap getImage();
+    void setImage(Bitmap value);
 }

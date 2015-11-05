@@ -268,6 +268,16 @@ public class Book implements IBook{
     public void setImagePath(String value) {
         this.volumeInfo.getImageLinks().setThumbnail(value);
     }
+
+    @Override
+    public Bitmap getImage() {
+        throw new UnsupportedOperationException("TODO");
+    }
+
+    @Override
+    public void setImage(Bitmap value) {
+        throw new UnsupportedOperationException("TODO");
+    }
 }
 
 class AccessInfo implements Serializable{

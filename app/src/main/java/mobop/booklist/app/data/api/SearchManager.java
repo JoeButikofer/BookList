@@ -10,6 +10,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import mobop.booklist.app.Queue;
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.generic.IBook;
 import mobop.booklist.app.data.generic.IManager;
@@ -28,14 +30,12 @@ public class SearchManager //implements IManager<IBook>
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
     private List<IBook> listBook;
     private Context context;
-    private RequestQueue queue;
 
     public SearchManager(Context context)
     {
         this.context = context;
 
         // Instantiate the RequestQueue.
-        this.queue = Volley.newRequestQueue(context);
         this.listBook = new LinkedList<>();
     }
 
@@ -80,7 +80,7 @@ public class SearchManager //implements IManager<IBook>
             }
         });
 
-        queue.add(jsonRequest);
+        Queue.getInstance(context).add(jsonRequest);
 
         return bookAdapter;
     }
