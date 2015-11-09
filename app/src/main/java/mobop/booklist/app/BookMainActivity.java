@@ -32,8 +32,9 @@ public class BookMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private BookListFragment mBookListFragment;
-    private SearchManager mSearchManager;
-    private IPersistentManager<IBook> mDatabaseManager;
+    private ISearchManager<IBook> mApiSearch;
+    private ISearchManager<IBook> mDatabaseSearch;
+    private IPersistentManager<IBook> mPersistentManager;
 
 
     @Override
@@ -54,9 +55,12 @@ public class BookMainActivity extends AppCompatActivity
             }
         });
 
-        mSearchManager = new SearchManager(this);
-        mDatabaseManager = new BookManager(this);
-        mDatabaseManager.clearFilter();
+        mApiSearch = new SearchManager(this);
+        {
+            BookManager bookManager = new BookManager(this);
+            mPersistentManager = bookManager;
+            mDatabaseSearch = bookManager;
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -95,9 +99,9 @@ public class BookMainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),
                         "search...", Toast.LENGTH_SHORT).show();
 
-                mSearchManager.filter(query);
+                mApiSearch.filter(query);
 
-                changeManager(mSearchManager);
+                changeSerach(mApiSearch);
 
                 return false;
             }
@@ -135,16 +139,20 @@ public class BookMainActivity extends AppCompatActivity
     private void loadMenu(int menu_id) {
         switch (menu_id) {
             case R.id.nav_wish:
-                mDatabaseManager.filter(BookManager.SEARCH_WISH);
+                mDatabaseSearch.filter(BookManager.SEARCH_WISH);
+                changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_library:
-                mDatabaseManager.filter(BookManager.SEARCH_LIBRARY);
+                mDatabaseSearch.filter(BookManager.SEARCH_LIBRARY);
+                changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_to_read:
-                mDatabaseManager.filter(BookManager.SEARCH_TO_READ);
+                mDatabaseSearch.filter(BookManager.SEARCH_TO_READ);
+                changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_nav_favorites:
-                mDatabaseManager.filter(BookManager.SEARCH_FAVORITES);
+                mDatabaseSearch.filter(BookManager.SEARCH_FAVORITES);
+                changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_share:
 
@@ -155,10 +163,9 @@ public class BookMainActivity extends AppCompatActivity
             default:
                 throw new IllegalStateException("ID " + menu_id + " unknown !");
         }
-        changeManager(mDatabaseManager);
     }
 
-    private void changeManager(ISearchManager<IBook> manager) {
+    private void changeSerach(ISearchManager<IBook> manager) {
         mBookListFragment.setManager(manager);
     }
 

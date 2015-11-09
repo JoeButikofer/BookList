@@ -21,16 +21,17 @@ import java.util.List;
 //voir http://mickael-lt.developpez.com/tutoriels/android/personnaliser-listview/
 public class BookAdapter extends BaseAdapter implements IAdatper<IBook>
 {
-    private List<IBook> listBook;
+    private final List<IBook> listBook;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final String name;
 
-    private Context context;
-    private LayoutInflater inflater;
-
-    public BookAdapter(Context _context, List<IBook> _listBook)
+    public BookAdapter(Context context, List<IBook> listBook, String name)
     {
-        this.listBook = _listBook;
-        this.context = _context;
+        this.context = context;
+        this.listBook = listBook;
         this.inflater = LayoutInflater.from(context);
+        this.name = name;
     }
 
     @Override
@@ -80,5 +81,13 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IBook>
         bookRatings.setText(""+listBook.get(position).getRatings());
 
         return layoutItem;
+    }
+
+    @Override
+    public String toString() {
+        return "BookAdapter{" +
+                "name='" + name + '\'' +
+                ", super=" + super.toString() +
+                '}';
     }
 }

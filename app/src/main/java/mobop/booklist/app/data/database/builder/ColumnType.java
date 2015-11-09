@@ -5,4 +5,5 @@ public enum ColumnType {
     Long,
     Int,
     Blob,
+    Bool,
 }

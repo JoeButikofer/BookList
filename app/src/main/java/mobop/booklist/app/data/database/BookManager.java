@@ -13,16 +13,18 @@ import mobop.booklist.app.data.database.builder.Table;
 import mobop.booklist.app.data.generic.IAdatper;
 import mobop.booklist.app.data.generic.IBook;
 import mobop.booklist.app.data.generic.IPersistentManager;
+import mobop.booklist.app.data.generic.ISearchManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookManager implements IPersistentManager<IBook> {
+public class BookManager implements IPersistentManager<IBook>, ISearchManager<IBook> {
 
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_PAGES = "pages";
     private static final String COLUMN_GENRE = "genre";
     private static final String COLUMN_RATING = "rating";
+    private static final String COLUMN_READ = "read";
     public static final String SEARCH_WISH = "SEARCH_WISH";
     public static final String SEARCH_LIBRARY = "SEARCH_LIBRARY";
     public static final String SEARCH_TO_READ = "SEARCH_TO_READ";
@@ -37,7 +39,7 @@ public class BookManager implements IPersistentManager<IBook> {
         mDbHelper = new DbHelper(context);
         mContext = context;
         mListbook = new ArrayList<>();
-        mAdapter = new BookAdapter(mContext, mListbook);
+        mAdapter = new BookAdapter(mContext, mListbook, "bookManager");
     }
 
     public static final Table TABLE = new Table("books"
@@ -45,6 +47,7 @@ public class BookManager implements IPersistentManager<IBook> {
             , new Column(COLUMN_GENRE, ColumnType.Text)
             , new Column(COLUMN_PAGES, ColumnType.Int)
             , new Column(COLUMN_RATING, ColumnType.Int)
+            , new Column(COLUMN_READ, ColumnType.Bool)
     );
 
     @Override
@@ -67,9 +70,18 @@ public class BookManager implements IPersistentManager<IBook> {
             book.setGenre(c.getString(2));
             book.setPages(c.getInt(3));
             book.setRatings(c.getInt(4));
+            book.setRead(dbToBool(c.getInt(5)));
             mListbook.add(book);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    private static boolean dbToBool(int value) {
+        return value == 1;
+    }
+
+    private static int boolToDb(boolean value) {
+        return value ? 1 : 0;
     }
 
     @Override
@@ -87,6 +99,7 @@ public class BookManager implements IPersistentManager<IBook> {
         values.put(COLUMN_GENRE, item.getGenre());
         values.put(COLUMN_PAGES, item.getPages());
         values.put(COLUMN_RATING, item.getRatings());
+        values.put(COLUMN_READ, boolToDb(item.isRead()));
     }
 
     private void add(Book book) {

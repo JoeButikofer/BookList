@@ -38,7 +38,7 @@ public class SearchManager implements ISearchManager<IBook> {
 
         // Instantiate
         listBook = new LinkedList<>();
-        mBookAdapter = new BookAdapter(context, listBook); //TODO voir si le final ne fout pas la merde
+        mBookAdapter = new BookAdapter(context, listBook, "SearchManager");
     }
 
 
