@@ -25,16 +25,15 @@ import com.google.zxing.integration.android.IntentResult;
 import mobop.booklist.app.data.api.SearchManager;
 import mobop.booklist.app.data.database.BookManager;
 import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.data.generic.IManager;
+import mobop.booklist.app.data.generic.IPersistentManager;
+import mobop.booklist.app.data.generic.ISearchManager;
 
 public class BookMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
-
     private BookListFragment mBookListFragment;
     private SearchManager mSearchManager;
-    private IManager<IBook> databaseManager;
+    private IPersistentManager<IBook> mDatabaseManager;
 
 
     @Override
@@ -56,9 +55,9 @@ public class BookMainActivity extends AppCompatActivity
         });
 
         mSearchManager = new SearchManager(this);
-        databaseManager = new BookManager(this);
+        mDatabaseManager = new BookManager(this);
 
-        mBookListFragment.setManager(databaseManager);
+        mBookListFragment.setManager(mDatabaseManager);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -159,7 +158,7 @@ public class BookMainActivity extends AppCompatActivity
         }
     }
 
-    private void changeBookList(IManager<IBook> manager) {
+    private void changeBookList(ISearchManager<IBook> manager) {
         mBookListFragment.setManager(manager);
     }
 

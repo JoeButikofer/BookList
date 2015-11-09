@@ -16,18 +16,17 @@ import mobop.booklist.app.Queue;
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.generic.IAdatper;
 import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.data.generic.IManager;
+import mobop.booklist.app.data.generic.ISearchManager;
 import mobop.booklist.app.task.ParseJSONTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SearchManager implements IManager<IBook> {
+public class SearchManager implements ISearchManager<IBook> {
 
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
     private final BookAdapter mBookAdapter;
@@ -85,18 +84,7 @@ public class SearchManager implements IManager<IBook> {
     }
 
     @Override
-    public Book add(IBook item) {
-        //TODO throw exception
-        return null;
-    }
-
-    @Override
-    public void update(IBook item) {
-        //TODO throw exception
-    }
-
-    @Override
     public void clearFilter() {
-
+        // TODO
     }
 }

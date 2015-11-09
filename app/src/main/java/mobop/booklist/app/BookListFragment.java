@@ -8,7 +8,7 @@ import android.view.*;
 import android.widget.*;
 
 import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.data.generic.IManager;
+import mobop.booklist.app.data.generic.ISearchManager;
 
 
 public class BookListFragment extends Fragment {
@@ -16,7 +16,7 @@ public class BookListFragment extends Fragment {
     public final static String EXTRA_BOOK = "mobop.booklist.app.BOOK";
 
     private ListView listViewBook;
-    private IManager<IBook> mManager;
+    private ISearchManager<IBook> mManager;
 
     @Nullable
     @Override
@@ -61,7 +61,7 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
-    public void setManager(IManager<IBook> manager) {
+    public void setManager(ISearchManager<IBook> manager) {
         this.mManager = manager;
         if (listViewBook != null) {
             listViewBook.setAdapter(manager.adapter());

@@ -1,12 +1,8 @@
 package mobop.booklist.app.data.generic;
 
-public interface IManager<T> {
+public interface ISearchManager<T> {
     void filter(String text);
     void clearFilter();
 
     IAdatper<T> adapter();
-
-    T add(T item);
-
-    void update(T item);
 }

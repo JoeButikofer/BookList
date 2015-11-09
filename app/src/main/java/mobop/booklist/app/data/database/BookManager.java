@@ -12,12 +12,12 @@ import mobop.booklist.app.data.database.builder.ColumnType;
 import mobop.booklist.app.data.database.builder.Table;
 import mobop.booklist.app.data.generic.IAdatper;
 import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.data.generic.IManager;
+import mobop.booklist.app.data.generic.IPersistentManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookManager implements IManager<IBook> {
+public class BookManager implements IPersistentManager<IBook> {
 
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_PAGES = "pages";
