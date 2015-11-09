@@ -37,6 +37,8 @@ public class Book implements IBook{
     private AccessInfo accessInfo;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @JsonIgnore
+    private boolean read = false;
 
     /**
      *
@@ -277,6 +279,32 @@ public class Book implements IBook{
     @Override
     public void setImage(Bitmap value) {
         throw new UnsupportedOperationException("TODO");
+    }
+
+    @Override
+    public boolean isRead() {
+        return read;
+    }
+
+    @Override
+    public void setRead(boolean value) {
+        read = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "kind='" + kind + '\'' +
+                ", id='" + id + '\'' +
+                ", etag='" + etag + '\'' +
+                ", selfLink='" + selfLink + '\'' +
+                ", volumeInfo=" + volumeInfo +
+                ", layerInfo=" + layerInfo +
+                ", saleInfo=" + saleInfo +
+                ", accessInfo=" + accessInfo +
+                ", additionalProperties=" + additionalProperties +
+                ", super=" + super.toString() +
+                '}';
     }
 }
 

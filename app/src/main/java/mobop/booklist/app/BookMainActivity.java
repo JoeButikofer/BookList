@@ -135,16 +135,16 @@ public class BookMainActivity extends AppCompatActivity
     private void loadMenu(int menu_id) {
         switch (menu_id) {
             case R.id.nav_wish:
-
+                mDatabaseManager.filter(BookManager.SEARCH_WISH);
                 break;
             case R.id.nav_library:
-
+                mDatabaseManager.filter(BookManager.SEARCH_LIBRARY);
                 break;
             case R.id.nav_to_read:
-
+                mDatabaseManager.filter(BookManager.SEARCH_TO_READ);
                 break;
             case R.id.nav_nav_favorites:
-
+                mDatabaseManager.filter(BookManager.SEARCH_FAVORITES);
                 break;
             case R.id.nav_share:
 

@@ -5,15 +5,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import mobop.booklist.app.data.database.BookManager;
 import mobop.booklist.app.data.generic.IBook;
+import mobop.booklist.app.data.generic.IPersistentManager;
 
 
-public class BookDetailsActivity extends AppCompatActivity {
+public class BookDetailsActivity extends AppCompatActivity{
+
+    private IBook mBook;
+    private final IPersistentManager<IBook> mDatabaseManager = new BookManager(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,23 +30,33 @@ public class BookDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        IBook book = (IBook)intent.getSerializableExtra(BookListFragment.EXTRA_BOOK);
+        mBook = (IBook)intent.getSerializableExtra(BookListFragment.EXTRA_BOOK);
 
         TextView bookName = (TextView) findViewById(R.id.book_name);
-        bookName.setText(book.getName());
+        bookName.setText(mBook.getName());
 
         TextView bookGenre = (TextView) findViewById(R.id.book_genre);
-        bookGenre.setText(book.getGenre());
+        bookGenre.setText(mBook.getGenre());
 
         TextView bookRating = (TextView) findViewById(R.id.book_ratings);
-        bookRating.setText(""+book.getRatings());
+        bookRating.setText("" + mBook.getRatings());
 
         TextView bookPages = (TextView) findViewById(R.id.book_pages);
-        bookPages.setText(book.getPages() + " pages");
+        bookPages.setText(mBook.getPages() + " pages");
 
         ImageView bookImage = (ImageView) findViewById(R.id.book_image);
         // Load image with Picasso http://square.github.io/picasso/
-        Picasso.with(this).load(book.getImagePath()).into(bookImage);
+        Picasso.with(this).load(mBook.getImagePath()).into(bookImage);
+
+        CheckBox bookRead = (CheckBox) findViewById(R.id.book_have);
+        bookRead.setChecked(mBook.isRead());
+        bookRead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mBook.setRead(isChecked);
+                mBook = mDatabaseManager.save(mBook);
+            }
+        });
     }
 
 

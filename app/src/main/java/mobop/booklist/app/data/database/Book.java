@@ -5,14 +5,16 @@ import android.graphics.Bitmap;
 import mobop.booklist.app.data.generic.IBook;
 
 public class Book implements IBook {
+    private String id;
     private String name;
     private String genre;
     private int pages;
     private double ratings;
     private String imagePath;
     private Bitmap image;
+    private boolean read;
 
-    private int dbId;
+    private long dbId;
 
     public Book() {
         dbId = -1;
@@ -20,10 +22,12 @@ public class Book implements IBook {
 
     public Book(IBook item) {
         this();
+        this.id = item.getId();
         this.name = item.getName();
         this.genre = item.getGenre();
         this.pages = item.getPages();
         this.ratings = item.getRatings();
+        this.read = item.isRead();
         //this.image = item.getImage();
         if (item instanceof Book) {
             Book book = (Book) item;
@@ -31,12 +35,22 @@ public class Book implements IBook {
         }
     }
 
-    public int getDbId() {
+    public long getDbId() {
         return dbId;
     }
 
-    public void setDbId(int value) {
+    public void setDbId(long value) {
         this.dbId = value;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -97,5 +111,15 @@ public class Book implements IBook {
     @Override
     public void setImage(Bitmap value) {
         image = value;
+    }
+
+    @Override
+    public boolean isRead() {
+        return read;
+    }
+
+    @Override
+    public void setRead(boolean value) {
+        read = value;
     }
 }

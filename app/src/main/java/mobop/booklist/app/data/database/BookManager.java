@@ -19,10 +19,14 @@ import java.util.List;
 
 public class BookManager implements IPersistentManager<IBook> {
 
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_PAGES = "pages";
-    public static final String COLUMN_GENRE = "genre";
-    public static final String COLUMN_RATING = "rating";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_PAGES = "pages";
+    private static final String COLUMN_GENRE = "genre";
+    private static final String COLUMN_RATING = "rating";
+    public static final String SEARCH_WISH = "SEARCH_WISH";
+    public static final String SEARCH_LIBRARY = "SEARCH_LIBRARY";
+    public static final String SEARCH_TO_READ = "SEARCH_TO_READ";
+    public static final String SEARCH_FAVORITES = "SEARCH_FAVORITES";
 
     private final Context mContext;
     private final DbHelper mDbHelper;
@@ -37,10 +41,10 @@ public class BookManager implements IPersistentManager<IBook> {
     }
 
     public static final Table TABLE = new Table("books"
-            , new Column(BookManager.COLUMN_NAME, ColumnType.Text)
-            , new Column(BookManager.COLUMN_GENRE, ColumnType.Text)
-            , new Column(BookManager.COLUMN_PAGES, ColumnType.Int)
-            , new Column(BookManager.COLUMN_RATING, ColumnType.Int)
+            , new Column(COLUMN_NAME, ColumnType.Text)
+            , new Column(COLUMN_GENRE, ColumnType.Text)
+            , new Column(COLUMN_PAGES, ColumnType.Int)
+            , new Column(COLUMN_RATING, ColumnType.Int)
     );
 
     @Override
@@ -84,30 +88,17 @@ public class BookManager implements IPersistentManager<IBook> {
         values.put(COLUMN_PAGES, item.getPages());
         values.put(COLUMN_RATING, item.getRatings());
     }
-    @Override
-    public IBook add(IBook item) {
-        if (!(item instanceof Book)) {
-            item = new Book(item);
-        }
-        Book book = (Book) item;
+
+    private void add(Book book) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         toContentValue(values, book);
 
         long id = db.insert(TABLE.getName(), null, values);
-        book.setDbId((int)id);
-        return book;
+        book.setDbId(id);
     }
 
-    @Override
-    public void update(IBook item) {
-        if (!(item instanceof Book)) {
-            throw new IllegalArgumentException();
-        }
-        Book book = (Book) item;
-        if (book.getDbId() <= 0) {
-            throw new IllegalArgumentException();
-        }
+    private void update(IBook item, long dbId) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         toContentValue(values, item);
@@ -116,11 +107,35 @@ public class BookManager implements IPersistentManager<IBook> {
                 values,
                 Table.ID + "= ?",
                 new String[]{
-                        String.valueOf(book.getDbId())
+                        String.valueOf(dbId)
                 }
         );
         if (nb != 1) {
             throw new IllegalArgumentException();
         }
+    }
+
+    private long getDbId(String id) {
+        // TODO
+        return -1;
+    }
+
+    @Override
+    public IBook save(IBook item) {
+        if (item instanceof Book) {
+            Book book = (Book) item;
+            if (book.getDbId() > 0) {
+                update(book, book.getDbId());
+                return book;
+            }
+        }
+        long dbId = getDbId(item.getId());
+        Book book = new Book(item);
+        if (dbId > 0) {
+            this.update(book, dbId);
+        } else {
+            this.add(book);
+        }
+        return book;
     }
 }
