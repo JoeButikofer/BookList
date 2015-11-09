@@ -167,6 +167,7 @@ public class BookMainActivity extends AppCompatActivity
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null) {
             scanResult.getFormatName();
+            mSearchManager.filterIsbn(scanResult.getContents());
             Log.d("QRCODE", "'" + scanResult.getContents() + "' '" + scanResult.toString() + "'");
         } else {
             super.onActivityResult(requestCode, resultCode, data);

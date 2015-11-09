@@ -33,12 +33,31 @@ public class SearchManager implements ISearchManager<IBook> {
     private final List<IBook> listBook;
     private final Context context;
 
+    private static final String AUTHOR_SEARCH = "+inauthor";
+    private static final String ISBN_SEARCH = "+isbn";
+    private static final String TITLE_SEARCH = "+intitle";
+
     public SearchManager(Context context) {
         this.context = context;
 
         // Instantiate
         listBook = new LinkedList<>();
         mBookAdapter = new BookAdapter(context, listBook); //TODO voir si le final ne fout pas la merde
+    }
+
+    public void filterTitle(String text)
+    {
+        filter(text + TITLE_SEARCH);
+    }
+
+    public void filterAuthor(String text)
+    {
+        filter(text + AUTHOR_SEARCH);
+    }
+
+    public void filterIsbn(String text)
+    {
+        filter(text + ISBN_SEARCH);
     }
 
 
