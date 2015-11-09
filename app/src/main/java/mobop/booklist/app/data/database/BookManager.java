@@ -65,6 +65,7 @@ public class BookManager implements IManager<IBook> {
             book.setRatings(c.getInt(4));
             mListbook.add(book);
         }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -92,7 +93,6 @@ public class BookManager implements IManager<IBook> {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         toContentValue(values, book);
-
 
         long id = db.insert(TABLE.getName(), null, values);
         book.setDbId((int)id);

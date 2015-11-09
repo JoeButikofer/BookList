@@ -31,8 +31,8 @@ public class SearchManager implements IManager<IBook> {
 
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
     private final BookAdapter mBookAdapter;
-    private List<IBook> listBook;
-    private Context context;
+    private final List<IBook> listBook;
+    private final Context context;
 
     public SearchManager(Context context) {
         this.context = context;
@@ -76,6 +76,7 @@ public class SearchManager implements IManager<IBook> {
         });
 
         Queue.getInstance(context).add(jsonRequest);
+        mBookAdapter.notifyDataSetChanged();
     }
 
     @Override
