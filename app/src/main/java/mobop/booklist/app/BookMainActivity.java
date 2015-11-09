@@ -56,8 +56,7 @@ public class BookMainActivity extends AppCompatActivity
 
         mSearchManager = new SearchManager(this);
         mDatabaseManager = new BookManager(this);
-
-        mBookListFragment.setManager(mDatabaseManager);
+        mDatabaseManager.clearFilter();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,7 +97,7 @@ public class BookMainActivity extends AppCompatActivity
 
                 mSearchManager.filter(query);
 
-                changeBookList(mSearchManager);
+                changeManager(mSearchManager);
 
                 return false;
             }
@@ -156,9 +155,10 @@ public class BookMainActivity extends AppCompatActivity
             default:
                 throw new IllegalStateException("ID " + menu_id + " unknown !");
         }
+        changeManager(mDatabaseManager);
     }
 
-    private void changeBookList(ISearchManager<IBook> manager) {
+    private void changeManager(ISearchManager<IBook> manager) {
         mBookListFragment.setManager(manager);
     }
 
