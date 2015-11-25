@@ -37,6 +37,7 @@ public class Table {
 
     public static String nameForType(ColumnType type) {
         switch (type) {
+            case Bool:
             case Int:
                 return "INTEGER";
             case Long:
