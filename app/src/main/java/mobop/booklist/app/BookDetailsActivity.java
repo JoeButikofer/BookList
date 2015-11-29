@@ -20,13 +20,14 @@ import mobop.booklist.app.data.generic.IPersistentManager;
 public class BookDetailsActivity extends AppCompatActivity{
 
     private IBook mBook;
-    private final IPersistentManager<IBook> mDatabaseManager = new BookManager(this);
+    private IPersistentManager<IBook> mDatabaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
+        mDatabaseManager = new BookManager(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
@@ -76,6 +77,10 @@ public class BookDetailsActivity extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        else if (item.getItemId()== android.R.id.home) {
+            finish();
             return true;
         }
 
