@@ -12,15 +12,15 @@ import mobop.booklist.app.data.database.builder.Column;
 import mobop.booklist.app.data.database.builder.ColumnType;
 import mobop.booklist.app.data.database.builder.Table;
 import mobop.booklist.app.data.generic.IAdatper;
+import mobop.booklist.app.data.generic.IPersistentSearchManager;
 import mobop.booklist.app.data.generic.book.IApiBook;
-import mobop.booklist.app.data.generic.ISearchManager;
 import mobop.booklist.app.data.generic.book.IPersistentBook;
 import mobop.booklist.app.data.generic.book.IPersistentBookManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookManager implements IPersistentBookManager, ISearchManager<IApiBook> {
+public class BookManager implements IPersistentBookManager, IPersistentSearchManager<IApiBook> {
 
     private static final String COLUMN_API_ID = "api_id";
     private static final String COLUMN_NAME = "name";
@@ -30,7 +30,7 @@ public class BookManager implements IPersistentBookManager, ISearchManager<IApiB
     private static final String COLUMN_IMAGE_PATH = "image_path";
     private static final String COLUMN_NOTES = "notes";
     private static final String COLUMN_READ = "read";
-    private static final String COLUMN_HAVE = "have";
+    private static final String COLUMN_OWN = "own";
     public static final String SEARCH_WISH = "SEARCH_WISH";
     public static final String SEARCH_LIBRARY = "SEARCH_LIBRARY";
     public static final String SEARCH_TO_READ = "SEARCH_TO_READ";
@@ -57,17 +57,19 @@ public class BookManager implements IPersistentBookManager, ISearchManager<IApiB
             , new Column(COLUMN_IMAGE_PATH, ColumnType.Text)
             , new Column(COLUMN_NOTES, ColumnType.Text)
             , new Column(COLUMN_READ, ColumnType.Bool)
-            , new Column(COLUMN_HAVE, ColumnType.Bool)
+            , new Column(COLUMN_OWN, ColumnType.Bool)
     );
+    private void filterBool(String columnName, boolean value) {
+        filter(columnName + "= ?", new String[]{String.valueOf(boolToDb(value))});
+    }
 
-    @Override
-    public void filter(String text) {
+    private void filter(String columnsWhere, String[] valuesWhere) {
         mListbook.clear();
         Cursor c = mDbHelper.getReadableDatabase().query(
                 TABLE.getName(),                // The table to query
                 TABLE.getColumnsNames(),        // The columns to return
-                null,                           // The columns for the WHERE clause
-                null,                           // The values for the WHERE clause
+                columnsWhere,                   // The columns for the WHERE clause
+                valuesWhere,                    // The values for the WHERE clause
                 null,                           // don't group the rows
                 null,                           // don't filter by row groups
                 null                            // The sort order
@@ -117,20 +119,7 @@ public class BookManager implements IPersistentBookManager, ISearchManager<IApiB
         to.setOwn(item.isOwn());
         to.setDbId(item.getDbId());
     }
-    @Override
-    public void filterTitle(String text) {
 
-    }
-
-    @Override
-    public void filterAuthor(String text) {
-
-    }
-
-    @Override
-    public void filterIsbn(String text) {
-
-    }
 
     private static boolean dbToBool(int value) {
         return value == 1;
@@ -142,7 +131,7 @@ public class BookManager implements IPersistentBookManager, ISearchManager<IApiB
 
     @Override
     public void clearFilter() {
-        filter("");
+
     }
 
     @Override
@@ -159,7 +148,7 @@ public class BookManager implements IPersistentBookManager, ISearchManager<IApiB
         values.put(COLUMN_IMAGE_PATH, item.getImagePath());
         values.put(COLUMN_NOTES, item.getNotes());
         values.put(COLUMN_READ, boolToDb(item.isRead()));
-        values.put(COLUMN_HAVE, boolToDb(item.isOwn()));
+        values.put(COLUMN_OWN, boolToDb(item.isOwn()));
     }
 
     private void add(IPersistentBook book) {
@@ -236,5 +225,25 @@ public class BookManager implements IPersistentBookManager, ISearchManager<IApiB
         } else {
             return save(item);
         }
+    }
+
+    @Override
+    public void filterOwn() {
+        filterBool(COLUMN_OWN, true);
+    }
+
+    @Override
+    public void filterWish() {
+
+    }
+
+    @Override
+    public void filterToRead() {
+
+    }
+
+    @Override
+    public void filterFavorite() {
+
     }
 }

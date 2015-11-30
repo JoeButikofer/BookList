@@ -20,11 +20,10 @@ import mobop.booklist.app.data.generic.book.IPersistentBookManager;
 
 
 public class BookDetailsActivity extends AppCompatActivity{
-    
+
     private IPersistentBook mBook;
     private IPersistentBookManager mDatabaseManager;
     private EditText mEditNotes;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

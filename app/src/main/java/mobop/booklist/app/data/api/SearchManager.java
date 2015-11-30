@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import mobop.booklist.app.Queue;
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.generic.IAdatper;
+import mobop.booklist.app.data.generic.IApiSearchManager;
 import mobop.booklist.app.data.generic.book.IApiBook;
-import mobop.booklist.app.data.generic.ISearchManager;
 import mobop.booklist.app.task.ParseJSONTask;
 
 import org.json.JSONArray;
@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SearchManager implements ISearchManager<IApiBook> {
+public class SearchManager implements IApiSearchManager<IApiBook> {
 
     private final static String API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
     private final BookAdapter mBookAdapter;
