@@ -229,17 +229,12 @@ public class BookManager implements IPersistentBookManager, ISearchManager<IApiB
     }
     @Override
     public IPersistentBook loadInformation(IApiBook item) {
-        IPersistentBook book;
-        if (item instanceof IPersistentBook) {
-            book = (IPersistentBook) item;
+        IPersistentBook book =  get(item.getId());
+        if (book != null) {
+            loadApiInfomation(book, item);
+            return save(book);
         } else {
-            book = get(item.getId());
-            if (book != null) {
-                loadApiInfomation(book, item);
-            } else {
-                return save(item);
-            }
+            return save(item);
         }
-        return save(book);
     }
 }
