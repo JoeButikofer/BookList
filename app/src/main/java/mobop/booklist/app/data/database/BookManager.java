@@ -29,12 +29,10 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
     private static final String COLUMN_RATING = "rating";
     private static final String COLUMN_IMAGE_PATH = "image_path";
     private static final String COLUMN_NOTES = "notes";
-    private static final String COLUMN_READ = "read";
+    private static final String COLUMN_TO_READ = "to_read";
     private static final String COLUMN_OWN = "own";
-    public static final String SEARCH_WISH = "SEARCH_WISH";
-    public static final String SEARCH_LIBRARY = "SEARCH_LIBRARY";
-    public static final String SEARCH_TO_READ = "SEARCH_TO_READ";
-    public static final String SEARCH_FAVORITES = "SEARCH_FAVORITES";
+    private static final String COLUMN_WISH = "wish";
+    private static final String COLUMN_FAVORITE = "favorite";
 
     private final Context mContext;
     private final DbHelper mDbHelper;
@@ -56,8 +54,10 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
             , new Column(COLUMN_RATING, ColumnType.Int)
             , new Column(COLUMN_IMAGE_PATH, ColumnType.Text)
             , new Column(COLUMN_NOTES, ColumnType.Text)
-            , new Column(COLUMN_READ, ColumnType.Bool)
+            , new Column(COLUMN_TO_READ, ColumnType.Bool)
             , new Column(COLUMN_OWN, ColumnType.Bool)
+            , new Column(COLUMN_WISH, ColumnType.Bool)
+            , new Column(COLUMN_FAVORITE, ColumnType.Bool)
     );
     private void filterBool(String columnName, boolean value) {
         filter(columnName + "= ?", new String[]{String.valueOf(boolToDb(value))});
@@ -94,8 +94,10 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
         book.setRatings(c.getInt(5));
         book.setImagePath(c.getString(6));
         book.setNotes(c.getString(7));
-        book.setRead(dbToBool(c.getInt(8)));
+        book.setToRead(dbToBool(c.getInt(8)));
         book.setOwn(dbToBool(c.getInt(9)));
+        book.setWish(dbToBool(c.getInt(10)));
+        book.setFavorite(dbToBool(c.getInt(11)));
         return book;
     }
     private static void loadAllInfomations(IPersistentBook to, IApiBook item) {
@@ -115,9 +117,11 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
 
     private static void loadPersistentInformations(IPersistentBook to, IPersistentBook item) {
         to.setNotes(item.getNotes());
-        to.setRead(item.isRead());
+        to.setToRead(item.isToRead());
         to.setOwn(item.isOwn());
         to.setDbId(item.getDbId());
+        to.setWish(item.isWish());
+        to.setFavorite(item.isFavorite());
     }
 
 
@@ -147,8 +151,10 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
         values.put(COLUMN_RATING, item.getRatings());
         values.put(COLUMN_IMAGE_PATH, item.getImagePath());
         values.put(COLUMN_NOTES, item.getNotes());
-        values.put(COLUMN_READ, boolToDb(item.isRead()));
+        values.put(COLUMN_TO_READ, boolToDb(item.isToRead()));
         values.put(COLUMN_OWN, boolToDb(item.isOwn()));
+        values.put(COLUMN_WISH, boolToDb(item.isWish()));
+        values.put(COLUMN_FAVORITE, boolToDb(item.isFavorite()));
     }
 
     private void add(IPersistentBook book) {
@@ -234,16 +240,16 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
 
     @Override
     public void filterWish() {
-
+        filterBool(COLUMN_WISH, true);
     }
 
     @Override
     public void filterToRead() {
-
+        filterBool(COLUMN_TO_READ, true);
     }
 
     @Override
     public void filterFavorite() {
-
+        filterBool(COLUMN_FAVORITE, true);
     }
 }

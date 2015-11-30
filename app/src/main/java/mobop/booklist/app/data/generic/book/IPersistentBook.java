@@ -7,9 +7,15 @@ public interface IPersistentBook extends IApiBook {
     String getNotes();
     void setNotes(String value);
 
-    boolean isRead();
-    void setRead(boolean value);
+    boolean isToRead();
+    void setToRead(boolean value);
 
     boolean isOwn();
     void setOwn(boolean value);
+
+    boolean isWish();
+    void setWish(boolean value);
+
+    boolean isFavorite();
+    void setFavorite(boolean value);
 }

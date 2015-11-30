@@ -71,16 +71,28 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@+id/book_read"
+                    android:id="@+id/book_wish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/read" />
+                    android:text="@string/wish" />
 
                 <CheckBox
-                    android:id="@+id/book_have"
+                    android:id="@+id/book_own"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/own" />
+
+                <CheckBox
+                    android:id="@+id/book_to_read"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to_read" />
+
+                <CheckBox
+                    android:id="@+id/book_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/favorite" />
 
             </LinearLayout>
 

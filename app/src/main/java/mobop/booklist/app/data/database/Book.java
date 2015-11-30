@@ -1,6 +1,5 @@
 package mobop.booklist.app.data.database;
 
-import mobop.booklist.app.data.generic.book.IApiBook;
 import mobop.booklist.app.data.generic.book.IPersistentBook;
 
 public class Book implements IPersistentBook {
@@ -11,8 +10,10 @@ public class Book implements IPersistentBook {
     private double ratings;
     private String imagePath;
     private String notes;
-    private boolean read;
+    private boolean toRead;
     private boolean own;
+    private boolean wish;
+    private boolean favorite;
 
     private long dbId;
 
@@ -101,13 +102,13 @@ public class Book implements IPersistentBook {
     }
 
     @Override
-    public boolean isRead() {
-        return read;
+    public boolean isToRead() {
+        return toRead;
     }
 
     @Override
-    public void setRead(boolean value) {
-        read = value;
+    public void setToRead(boolean value) {
+        toRead = value;
     }
 
     @Override
@@ -118,5 +119,25 @@ public class Book implements IPersistentBook {
     @Override
     public void setOwn(boolean value) {
         own = value;
+    }
+
+    @Override
+    public boolean isWish() {
+        return wish;
+    }
+
+    @Override
+    public void setWish(boolean value) {
+        wish = value;
+    }
+
+    @Override
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    @Override
+    public void setFavorite(boolean value) {
+        favorite = value;
     }
 }

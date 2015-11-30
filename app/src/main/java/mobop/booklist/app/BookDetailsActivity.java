@@ -53,22 +53,42 @@ public class BookDetailsActivity extends AppCompatActivity{
         // Load image with Picasso http://square.github.io/picasso/
         Picasso.with(this).load(mBook.getImagePath()).into(bookImage);
 
-        CheckBox bookRead = (CheckBox) findViewById(R.id.book_read);
-        bookRead.setChecked(mBook.isRead());
-        bookRead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        CheckBox bookWish = (CheckBox) findViewById(R.id.book_wish);
+        bookWish.setChecked(mBook.isWish());
+        bookWish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mBook.setRead(isChecked);
+                mBook.setWish(isChecked);
                 saveBook();
             }
         });
 
-        CheckBox bookHave = (CheckBox) findViewById(R.id.book_have);
+        CheckBox bookHave = (CheckBox) findViewById(R.id.book_own);
         bookHave.setChecked(mBook.isOwn());
         bookHave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mBook.setOwn(isChecked);
+                saveBook();
+            }
+        });
+
+        CheckBox bookToRead = (CheckBox) findViewById(R.id.book_to_read);
+        bookToRead.setChecked(mBook.isToRead());
+        bookToRead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mBook.setToRead(isChecked);
+                saveBook();
+            }
+        });
+
+        CheckBox bookFavorite = (CheckBox) findViewById(R.id.book_favorite);
+        bookFavorite.setChecked(mBook.isFavorite());
+        bookFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mBook.setFavorite(isChecked);
                 saveBook();
             }
         });
