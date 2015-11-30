@@ -13,20 +13,19 @@ import com.squareup.picasso.Picasso;
 
 import mobop.booklist.app.R;
 import mobop.booklist.app.data.generic.IAdatper;
-import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.task.LoadImageTask;
+import mobop.booklist.app.data.generic.book.IApiBook;
 
 import java.util.List;
 
 //voir http://mickael-lt.developpez.com/tutoriels/android/personnaliser-listview/
-public class BookAdapter extends BaseAdapter implements IAdatper<IBook>
+public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
 {
-    private final List<IBook> listBook;
+    private final List<IApiBook> listBook;
     private final Context context;
     private final LayoutInflater inflater;
     private final String name;
 
-    public BookAdapter(Context context, List<IBook> listBook, String name)
+    public BookAdapter(Context context, List<IApiBook> listBook, String name)
     {
         this.context = context;
         this.listBook = listBook;
@@ -40,7 +39,7 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IBook>
     }
 
     @Override
-    public IBook getItem(int position) {
+    public IApiBook getItem(int position) {
         return listBook.get(position);
     }
 

@@ -1,23 +1,18 @@
 package mobop.booklist.app.data.api;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.graphics.Bitmap;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import mobop.booklist.app.data.generic.IBook;
-import mobop.booklist.app.tools.BitmapTools;
+import mobop.booklist.app.data.generic.book.IApiBook;
 
-public class Book implements IBook{
+public class ApiBook implements IApiBook {
 
     @JsonProperty("kind")
     private String kind;
@@ -37,8 +32,6 @@ public class Book implements IBook{
     private AccessInfo accessInfo;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    @JsonIgnore
-    private boolean read = false;
 
     /**
      *
@@ -271,29 +264,10 @@ public class Book implements IBook{
         this.volumeInfo.getImageLinks().setThumbnail(value);
     }
 
-    @Override
-    public Bitmap getImage() {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    @Override
-    public void setImage(Bitmap value) {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    @Override
-    public boolean isRead() {
-        return read;
-    }
-
-    @Override
-    public void setRead(boolean value) {
-        read = value;
-    }
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "ApiBook{" +
                 "kind='" + kind + '\'' +
                 ", id='" + id + '\'' +
                 ", etag='" + etag + '\'' +
@@ -543,6 +517,23 @@ class AccessInfo implements Serializable{
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return "AccessInfo{" +
+                "country='" + country + '\'' +
+                ", viewability='" + viewability + '\'' +
+                ", embeddable=" + embeddable +
+                ", publicDomain=" + publicDomain +
+                ", textToSpeechPermission='" + textToSpeechPermission + '\'' +
+                ", epub=" + epub +
+                ", pdf=" + pdf +
+                ", webReaderLink='" + webReaderLink + '\'' +
+                ", accessViewStatus='" + accessViewStatus + '\'' +
+                ", quoteSharingAllowed=" + quoteSharingAllowed +
+                ", additionalProperties=" + additionalProperties +
+                ", super=" + super.toString() +
+                '}';
+    }
 }
 
 class Dimensions implements Serializable{
@@ -1447,5 +1438,33 @@ class VolumeInfo implements Serializable{
         this.additionalProperties.put(name, value);
     }
 
-
+    @Override
+    public String toString() {
+        return "VolumeInfo{" +
+                "title='" + title + '\'' +
+                ", authors=" + authors +
+                ", publisher='" + publisher + '\'' +
+                ", publishedDate='" + publishedDate + '\'' +
+                ", description='" + description + '\'' +
+                ", readingModes=" + readingModes +
+                ", pageCount=" + pageCount +
+                ", printedPageCount=" + printedPageCount +
+                ", dimensions=" + dimensions +
+                ", printType='" + printType + '\'' +
+                ", averageRating=" + averageRating +
+                ", ratingsCount=" + ratingsCount +
+                ", maturityRating='" + maturityRating + '\'' +
+                ", allowAnonLogging=" + allowAnonLogging +
+                ", contentVersion='" + contentVersion + '\'' +
+                ", imageLinks=" + imageLinks +
+                ", language='" + language + '\'' +
+                ", previewLink='" + previewLink + '\'' +
+                ", infoLink='" + infoLink + '\'' +
+                ", canonicalVolumeLink='" + canonicalVolumeLink + '\'' +
+                ", mainCategory='" + mainCategory + '\'' +
+                ", categories=" + categories +
+                ", additionalProperties=" + additionalProperties +
+                ", super=" + super.toString() +
+                '}';
+    }
 }

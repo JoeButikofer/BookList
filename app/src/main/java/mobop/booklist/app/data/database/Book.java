@@ -1,18 +1,18 @@
 package mobop.booklist.app.data.database;
 
-import android.graphics.Bitmap;
+import mobop.booklist.app.data.generic.book.IApiBook;
+import mobop.booklist.app.data.generic.book.IPersistentBook;
 
-import mobop.booklist.app.data.generic.IBook;
-
-public class Book implements IBook {
+public class Book implements IPersistentBook {
     private String id;
     private String name;
     private String genre;
     private int pages;
     private double ratings;
     private String imagePath;
-    private Bitmap image;
+    private String notes;
     private boolean read;
+    private boolean own;
 
     private long dbId;
 
@@ -20,20 +20,7 @@ public class Book implements IBook {
         dbId = -1;
     }
 
-    public Book(IBook item) {
-        this();
-        this.id = item.getId();
-        this.name = item.getName();
-        this.genre = item.getGenre();
-        this.pages = item.getPages();
-        this.ratings = item.getRatings();
-        this.read = item.isRead();
-        //this.image = item.getImage();
-        if (item instanceof Book) {
-            Book book = (Book) item;
-            this.dbId = book.dbId;
-        }
-    }
+
 
     public long getDbId() {
         return dbId;
@@ -104,13 +91,13 @@ public class Book implements IBook {
     }
 
     @Override
-    public Bitmap getImage() {
-        return image;
+    public String getNotes() {
+        return notes;
     }
 
     @Override
-    public void setImage(Bitmap value) {
-        image = value;
+    public void setNotes(String value) {
+        notes = value;
     }
 
     @Override
@@ -121,5 +108,15 @@ public class Book implements IBook {
     @Override
     public void setRead(boolean value) {
         read = value;
+    }
+
+    @Override
+    public boolean isOwn() {
+        return own;
+    }
+
+    @Override
+    public void setOwn(boolean value) {
+        own = value;
     }
 }

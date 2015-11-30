@@ -1,11 +1,11 @@
-package mobop.booklist.app.data.generic;
+package mobop.booklist.app.data.generic.book;
 
 import android.graphics.Bitmap;
 import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public interface IBook extends Serializable { //Parcelable would be more efficient but we don't need it for just one object
+public interface IApiBook extends Serializable { //Parcelable would be more efficient but we don't need it for just one object
 
     String getId();
     void setId(String value);
@@ -24,10 +24,4 @@ public interface IBook extends Serializable { //Parcelable would be more efficie
 
     String getImagePath();
     void setImagePath(String value);
-
-    Bitmap getImage();
-    void setImage(Bitmap value);
-
-    boolean isRead();
-    void setRead(boolean value);
 }
