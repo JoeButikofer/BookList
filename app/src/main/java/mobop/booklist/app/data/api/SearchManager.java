@@ -30,9 +30,9 @@ public class SearchManager implements ISearchManager<IApiBook> {
     private final List<IApiBook> listBook;
     private final Context context;
 
-    private static final String AUTHOR_SEARCH = "+inauthor";
-    private static final String ISBN_SEARCH = "+isbn";
-    private static final String TITLE_SEARCH = "+intitle";
+    private static final String AUTHOR_SEARCH = "inauthor:";
+    private static final String ISBN_SEARCH = "isbn:";
+    private static final String TITLE_SEARCH = "intitle:";
 
     public SearchManager(Context context) {
         this.context = context;
@@ -44,17 +44,17 @@ public class SearchManager implements ISearchManager<IApiBook> {
 
     public void filterTitle(String text)
     {
-        filter(text + TITLE_SEARCH);
+        filter(TITLE_SEARCH + text);
     }
 
     public void filterAuthor(String text)
     {
-        filter(text + AUTHOR_SEARCH);
+        filter(AUTHOR_SEARCH + text);
     }
 
     public void filterIsbn(String text)
     {
-        filter(text + ISBN_SEARCH);
+        filter(ISBN_SEARCH + text);
     }
 
 
