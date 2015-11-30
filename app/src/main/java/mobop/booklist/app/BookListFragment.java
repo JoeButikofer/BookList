@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.*;
 import android.widget.*;
 
-import mobop.booklist.app.data.generic.IBook;
+import mobop.booklist.app.data.generic.book.IApiBook;
 import mobop.booklist.app.data.generic.ISearchManager;
 
 
@@ -16,7 +16,7 @@ public class BookListFragment extends Fragment {
     public final static String EXTRA_BOOK = "mobop.booklist.app.BOOK";
 
     private ListView listViewBook;
-    private ISearchManager<IBook> mManager;
+    private ISearchManager<IApiBook> mManager;
 
     @Nullable
     @Override
@@ -27,7 +27,7 @@ public class BookListFragment extends Fragment {
         //TODO REMOVE THIS
         //TEST
         /*
-        IBook testBook = new Book();
+        IApiBook testBook = new Book();
         testBook.setName("A really good book");
         testBook.setGenre("action");
         testBook.setPages(42);
@@ -42,7 +42,7 @@ public class BookListFragment extends Fragment {
         listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IBook selectedBook = mManager.adapter().getItem(position);
+                IApiBook selectedBook = mManager.adapter().getItem(position);
                 Intent intent = new Intent(getActivity(), BookDetailsActivity.class);
                 intent.putExtra(EXTRA_BOOK, selectedBook);
                 startActivity(intent);
@@ -51,7 +51,7 @@ public class BookListFragment extends Fragment {
         listViewBook.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                IBook selectedBook = mManager.adapter().getItem(position);
+                IApiBook selectedBook = mManager.adapter().getItem(position);
 
                 //TODO Long click : add/remove from lists
                 return true; //true if the callback consumed the long click, false otherwise
@@ -61,7 +61,7 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
-    public void setManager(ISearchManager<IBook> manager) {
+    public void setManager(ISearchManager<IApiBook> manager) {
         this.mManager = manager;
         if (listViewBook != null) {
             listViewBook.setAdapter(manager.adapter());

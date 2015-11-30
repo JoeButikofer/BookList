@@ -24,17 +24,18 @@ import com.google.zxing.integration.android.IntentResult;
 
 import mobop.booklist.app.data.api.SearchManager;
 import mobop.booklist.app.data.database.BookManager;
-import mobop.booklist.app.data.generic.IBook;
+import mobop.booklist.app.data.generic.book.IApiBook;
 import mobop.booklist.app.data.generic.IPersistentManager;
 import mobop.booklist.app.data.generic.ISearchManager;
+import mobop.booklist.app.data.generic.book.IPersistentBookManager;
 
 public class BookMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private BookListFragment mBookListFragment;
-    private ISearchManager<IBook> mApiSearch;
-    private ISearchManager<IBook> mDatabaseSearch;
-    private IPersistentManager<IBook> mPersistentManager;
+    private ISearchManager<IApiBook> mApiSearch;
+    private ISearchManager<IApiBook> mDatabaseSearch;
+    private IPersistentBookManager mPersistentManager;
 
 
     @Override
@@ -165,7 +166,7 @@ public class BookMainActivity extends AppCompatActivity
         }
     }
 
-    private void changeSerach(ISearchManager<IBook> manager) {
+    private void changeSerach(ISearchManager<IApiBook> manager) {
         mBookListFragment.setManager(manager);
     }
 
@@ -174,7 +175,7 @@ public class BookMainActivity extends AppCompatActivity
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null) {
             scanResult.getFormatName();
-            mSearchManager.filterIsbn(scanResult.getContents());
+            mApiSearch.filterIsbn(scanResult.getContents());
             Log.d("QRCODE", "'" + scanResult.getContents() + "' '" + scanResult.toString() + "'");
         } else {
             super.onActivityResult(requestCode, resultCode, data);

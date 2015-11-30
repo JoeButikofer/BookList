@@ -96,10 +96,14 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/edit_personnal_note"
-                android:layout_width="wrap_content"
+                android:minLines="3"
+                android:gravity="top|left"
+                android:id="@+id/edit_notes"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:scrollbars="vertical"
+                android:hint="@string/book_note_hint"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>

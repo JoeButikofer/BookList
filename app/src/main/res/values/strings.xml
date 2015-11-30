@@ -18,4 +18,5 @@
     <string name="list_library">Bibliothèque</string>
     <string name="list_to_read">A lire</string>
     <string name="list_favorites">Favoris</string>
+    <string name="book_note_hint">Notes...</string>
 </resources>
