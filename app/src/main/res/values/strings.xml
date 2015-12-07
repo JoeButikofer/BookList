@@ -7,8 +7,11 @@
     <string name="action_scan">Scan</string>
     <string name="title_activity_book_details">Details</string>
     <string name="book_summary">Resumé :</string>
-    <string name="read">Lu</string>
+    <string name="to_read">A lire</string>
     <string name="own">J\'ai</string>
+    <string name="wish">Souhaite</string>
+    <string name="favorite">Favoris</string>
+
     <string name="navigation_drawer_title">Listes</string>
     <string name="title_activity_book_list">BookList</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

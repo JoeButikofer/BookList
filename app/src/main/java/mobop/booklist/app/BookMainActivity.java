@@ -25,8 +25,9 @@ import com.google.zxing.integration.android.IntentResult;
 
 import mobop.booklist.app.data.api.SearchManager;
 import mobop.booklist.app.data.database.BookManager;
+import mobop.booklist.app.data.generic.IApiSearchManager;
+import mobop.booklist.app.data.generic.IPersistentSearchManager;
 import mobop.booklist.app.data.generic.book.IApiBook;
-import mobop.booklist.app.data.generic.IPersistentManager;
 import mobop.booklist.app.data.generic.ISearchManager;
 import mobop.booklist.app.data.generic.book.IPersistentBookManager;
 
@@ -34,8 +35,8 @@ public class BookMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private BookListFragment mBookListFragment;
-    private ISearchManager<IApiBook> mApiSearch;
-    private ISearchManager<IApiBook> mDatabaseSearch;
+    private IApiSearchManager<IApiBook> mApiSearch;
+    private IPersistentSearchManager<IApiBook> mDatabaseSearch;
     private IPersistentBookManager mPersistentManager;
 
 
@@ -161,19 +162,19 @@ public class BookMainActivity extends AppCompatActivity
     private void loadMenu(int menu_id) {
         switch (menu_id) {
             case R.id.nav_wish:
-                mDatabaseSearch.filter(BookManager.SEARCH_WISH);
+                mDatabaseSearch.filterWish();
                 changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_library:
-                mDatabaseSearch.filter(BookManager.SEARCH_LIBRARY);
+                mDatabaseSearch.filterOwn();
                 changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_to_read:
-                mDatabaseSearch.filter(BookManager.SEARCH_TO_READ);
+                mDatabaseSearch.filterToRead();
                 changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_nav_favorites:
-                mDatabaseSearch.filter(BookManager.SEARCH_FAVORITES);
+                mDatabaseSearch.filterFavorite();
                 changeSerach(mDatabaseSearch);
                 break;
             case R.id.nav_share:
