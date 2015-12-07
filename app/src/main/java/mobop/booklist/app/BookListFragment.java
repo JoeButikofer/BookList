@@ -67,4 +67,9 @@ public class BookListFragment extends Fragment {
             listViewBook.setAdapter(manager.adapter());
         }
     }
+
+    public ISearchManager<IApiBook> getManager()
+    {
+        return mManager;
+    }
 }

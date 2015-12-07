@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
@@ -111,6 +112,26 @@ public class BookMainActivity extends AppCompatActivity
             public boolean onQueryTextChange(String newText) {
                 //TODO suggestions ???
                 return false;
+            }
+        });
+
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+
+            public ISearchManager<IApiBook> previousManager;
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                //nothing
+                previousManager = mBookListFragment.getManager();
+                return true; //true to allow open
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // TODO open the previous list
+                changeSerach(previousManager);
+                return true; //true to allow close
             }
         });
 
