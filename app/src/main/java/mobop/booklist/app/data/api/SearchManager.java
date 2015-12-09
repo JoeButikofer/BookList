@@ -29,6 +29,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     private final BookAdapter mBookAdapter;
     private final List<IApiBook> listBook;
     private final Context context;
+    private String language;
 
     private static final String AUTHOR_SEARCH = "inauthor:";
     private static final String ISBN_SEARCH = "isbn:";
@@ -36,6 +37,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
     public SearchManager(Context context) {
         this.context = context;
+        this.language = "en"; //Set the default language to english
 
         // Instantiate
         listBook = new LinkedList<>();
@@ -63,7 +65,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
         listBook.clear();
 
-        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + text, new Response.Listener<JSONObject>() {
+        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + text + "&langRestrict=" + language, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -102,5 +104,10 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     @Override
     public void clearFilter() {
         // TODO
+    }
+
+    public void setLanguage(String languageCode)
+    {
+        this.language = languageCode;
     }
 }
