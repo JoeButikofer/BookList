@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -43,8 +44,11 @@ public class BookDetailsActivity extends AppCompatActivity{
         TextView bookGenre = (TextView) findViewById(R.id.book_genre);
         bookGenre.setText(mBook.getGenre());
 
-        TextView bookRating = (TextView) findViewById(R.id.book_ratings);
-        bookRating.setText("" + mBook.getRatings());
+        RatingBar bookRating = (RatingBar) findViewById(R.id.book_ratings);
+
+        double rating = mBook.getRatings();
+        if(rating > 0)
+            bookRating.setRating((float)rating);
 
         TextView bookPages = (TextView) findViewById(R.id.book_pages);
         bookPages.setText(mBook.getPages() + " pages");

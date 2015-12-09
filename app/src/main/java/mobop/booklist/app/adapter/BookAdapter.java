@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -67,7 +68,7 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
         TextView bookName = (TextView) layoutItem.findViewById(R.id.book_name);
         TextView bookGenre = (TextView) layoutItem.findViewById(R.id.book_genre);
         TextView bookPages = (TextView) layoutItem.findViewById(R.id.book_pages);
-        TextView bookRatings = (TextView) layoutItem.findViewById(R.id.book_ratings);
+        RatingBar bookRatings = (RatingBar) layoutItem.findViewById(R.id.book_ratings);
 
         //Fills it
 
@@ -77,7 +78,10 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
         bookName.setText(listBook.get(position).getName());
         bookGenre.setText(listBook.get(position).getGenre());
         bookPages.setText(listBook.get(position).getPages()+ " pages");
-        bookRatings.setText(""+listBook.get(position).getRatings());
+
+        double rating = listBook.get(position).getRatings();
+        if(rating > 0)
+            bookRatings.setRating((float)rating);
 
         return layoutItem;
     }

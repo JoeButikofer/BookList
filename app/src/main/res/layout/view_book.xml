@@ -40,14 +40,15 @@
             android:layout_gravity="fill"
             android:text="Nb Pages" />
 
-    <TextView
-            android:id="@+id/book_ratings"
-            android:layout_column="2"
-            android:layout_row="0"
-            android:layout_rowSpan="3"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:text="Ratings" />
-
-
+    <RatingBar
+        android:id="@+id/book_ratings"
+        android:layout_column="2"
+        android:layout_row="0"
+        android:layout_rowSpan="3"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:isIndicator="true"
+        android:stepSize="0.5"
+        style="?android:attr/ratingBarStyleSmall"
+        />
 
 </GridLayout>
