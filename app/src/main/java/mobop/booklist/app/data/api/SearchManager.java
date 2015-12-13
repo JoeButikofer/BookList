@@ -1,6 +1,7 @@
 package mobop.booklist.app.data.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -20,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,7 +68,15 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
         listBook.clear();
 
-        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + text + "&langRestrict=" + language, new Response.Listener<JSONObject>() {
+        String encodedText = "";
+        try {
+            encodedText = URLEncoder.encode(text, "UTF-8");
+            Log.d("TESTURL", encodedText);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + encodedText + "&langRestrict=" + language, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
