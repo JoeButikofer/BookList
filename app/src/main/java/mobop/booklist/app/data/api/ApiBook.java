@@ -215,13 +215,13 @@ public class ApiBook implements IApiBook {
 
     @Override
     public String getGenre() {
-        return this.volumeInfo.getMainCategory();
+        return this.volumeInfo.getCategories().get(0);
     }
 
     @Override
     public void setGenre(String value) {
-        //TODO logiquement, il faudrait aussi modifier la liste des genres (categories)
-        this.volumeInfo.setMainCategory(value);
+        this.volumeInfo.getCategories().remove(0);
+        this.volumeInfo.getCategories().add(0, value);
     }
 
     @Override
