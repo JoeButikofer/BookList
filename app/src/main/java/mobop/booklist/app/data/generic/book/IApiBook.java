@@ -1,8 +1,5 @@
 package mobop.booklist.app.data.generic.book;
 
-import android.graphics.Bitmap;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public interface IApiBook extends Serializable { //Parcelable would be more efficient but we don't need it for just one object
@@ -13,7 +10,7 @@ public interface IApiBook extends Serializable { //Parcelable would be more effi
     String getName();
     void setName(String value);
 
-    String getGenre(); //TODO peut etre mieux avec un enum nan ?, mais pas forcement compatible avec le webservice (et on fait quoi pour les multigenres ???)
+    String getGenre();
     void setGenre(String value);
 
     int getPages();
@@ -24,4 +21,7 @@ public interface IApiBook extends Serializable { //Parcelable would be more effi
 
     String getImagePath();
     void setImagePath(String value);
+
+    //TODO maybe Author(s), summary, ...
+
 }

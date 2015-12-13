@@ -215,7 +215,11 @@ public class ApiBook implements IApiBook {
 
     @Override
     public String getGenre() {
-        return this.volumeInfo.getCategories().get(0);
+        if(this.volumeInfo.getCategories() != null) {
+            if(this.volumeInfo.getCategories().size() > 0)
+                return this.volumeInfo.getCategories().get(0);
+        }
+        return "";
     }
 
     @Override

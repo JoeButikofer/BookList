@@ -1,5 +1,6 @@
 package mobop.booklist.app;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -32,7 +33,7 @@ import mobop.booklist.app.data.generic.ISearchManager;
 import mobop.booklist.app.data.generic.book.IPersistentBookManager;
 
 public class BookMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LanguageDialogFragment.LanguageDialogListener {
 
     private BookListFragment mBookListFragment;
     private IApiSearchManager<IApiBook> mApiSearch;
@@ -154,6 +155,14 @@ public class BookMainActivity extends AppCompatActivity
                 IntentIntegrator integrator = new IntentIntegrator(this);
                 integrator.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
                 return true;
+
+            case R.id.action_language:
+
+                // Create an instance of the dialog fragment and show it
+                DialogFragment dialog = new LanguageDialogFragment();
+                dialog.show(this.getFragmentManager(), "LanguageDialogFragment");
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -217,5 +226,15 @@ public class BookMainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onLanguageItemClick(String languageCode) {
+        mApiSearch.setLanguage(languageCode);
+    }
+
+    @Override
+    public String getCurrentLanguage() {
+        return mApiSearch.getLanguage();
     }
 }

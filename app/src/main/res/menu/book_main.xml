@@ -10,6 +10,12 @@
           android:title="@string/action_scan"
           app:showAsAction="ifRoom"
             android:icon="@android:drawable/ic_menu_camera"/>
+
+    <item android:id="@+id/action_language"
+        android:title="@string/action_language"
+        app:showAsAction="never"
+    />
+
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="100"

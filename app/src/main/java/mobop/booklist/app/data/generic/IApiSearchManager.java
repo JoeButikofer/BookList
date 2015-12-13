@@ -5,4 +5,6 @@ public interface IApiSearchManager<T> extends ISearchManager<T> {
     void filterTitle(String text);
     void filterAuthor(String text);
     void filterIsbn(String text);
+    void setLanguage(String languageCode);
+    String getLanguage();
 }

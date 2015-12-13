@@ -37,7 +37,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
     public SearchManager(Context context) {
         this.context = context;
-        this.language = "en"; //Set the default language to english
+        this.language = "en"; //Set the default language to english //TODO save choice
 
         // Instantiate
         listBook = new LinkedList<>();
@@ -106,6 +106,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
         // TODO
     }
 
+    public String getLanguage() {return this.language;}
     public void setLanguage(String languageCode)
     {
         this.language = languageCode;
