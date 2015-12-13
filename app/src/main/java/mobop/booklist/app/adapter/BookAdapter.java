@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -52,15 +53,15 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        GridLayout layoutItem;
+        RelativeLayout layoutItem;
 
         if(convertView == null)
         {
-            layoutItem = (GridLayout) inflater.inflate(R.layout.view_book, parent, false);
+            layoutItem = (RelativeLayout) inflater.inflate(R.layout.view_book, parent, false);
         }
         else
         {
-            layoutItem = (GridLayout)convertView;
+            layoutItem = (RelativeLayout)convertView;
         }
 
         //Get the fields
