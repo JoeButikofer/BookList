@@ -24,20 +24,6 @@ public class BookListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         listViewBook = (ListView) view.findViewById(android.R.id.list);
 
-        //TODO REMOVE THIS
-        //TEST
-        /*
-        IApiBook testBook = new Book();
-        testBook.setName("A really good book");
-        testBook.setGenre("action");
-        testBook.setPages(42);
-        testBook.setRatings(12);
-
-        databaseBookManager.add(testBook);
-        testBook.setPages(2);
-        databaseBookManager.update(testBook);
-        */
-
         listViewBook.setAdapter(mManager.adapter());
         listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

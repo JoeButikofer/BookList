@@ -99,7 +99,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //TODO voir quoi faire
+                //nothing
             }
         });
 
@@ -114,7 +114,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
     @Override
     public void clearFilter() {
-        // TODO
+        // nothing
     }
 
     public String getLanguage() {return this.language;}

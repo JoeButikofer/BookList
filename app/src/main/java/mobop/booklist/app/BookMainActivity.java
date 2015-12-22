@@ -112,7 +112,7 @@ public class BookMainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //TODO suggestions ???
+                //nothing
                 return false;
             }
         });
@@ -131,7 +131,6 @@ public class BookMainActivity extends AppCompatActivity
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                // TODO open the previous list
                 changeSerach(previousManager);
                 return true; //true to allow close
             }

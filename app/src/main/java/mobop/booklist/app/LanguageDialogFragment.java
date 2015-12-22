@@ -41,11 +41,11 @@ public class LanguageDialogFragment extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         String currentLanguage = mListener.getCurrentLanguage();
-        int currentLanguageindex = LANGUAGES_CODE.indexOf(currentLanguage);
+        int currentLanguageIndex = LANGUAGES_CODE.indexOf(currentLanguage);
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_language_message).setSingleChoiceItems(R.array.string_array_language, currentLanguageindex, new DialogInterface.OnClickListener() { //TODO init item check
+        builder.setTitle(R.string.dialog_language_message).setSingleChoiceItems(R.array.string_array_language, currentLanguageIndex, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // The 'which' argument contains the index position
                 // of the selected item

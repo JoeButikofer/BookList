@@ -258,7 +258,7 @@ public class ApiBook implements IApiBook {
     public String getImagePath() {
 
         if(this.volumeInfo.getImageLinks() != null) {
-           return this.volumeInfo.getImageLinks().getThumbnail(); //TODO prendre depuis autre source aussi (small, large,...)
+           return this.volumeInfo.getImageLinks().getThumbnail();
         }
         return null;
     }
