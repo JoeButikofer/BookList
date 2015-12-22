@@ -1,6 +1,7 @@
 package mobop.booklist.app.data.api;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -40,7 +41,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
     public SearchManager(Context context) {
         this.context = context;
-        this.language = "en"; //Set the default language to english //TODO save choice
+        this.language = PreferenceManager.getDefaultSharedPreferences(context).getString("search_language", "en"); //Retrieve the saved language or set the default language to english
 
         // Instantiate
         listBook = new LinkedList<>();
@@ -71,7 +72,6 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
         String encodedText = "";
         try {
             encodedText = URLEncoder.encode(text, "UTF-8");
-            Log.d("TESTURL", encodedText);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -121,5 +121,6 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     public void setLanguage(String languageCode)
     {
         this.language = languageCode;
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("search_language", languageCode).apply(); //Save this language
     }
 }
