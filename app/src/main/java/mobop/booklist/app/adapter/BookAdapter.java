@@ -80,7 +80,10 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
         bookName.setSelected(true); //For the auto scroll
         bookGenre.setText(listBook.get(position).getGenre());
         bookGenre.setSelected(true); //For the auto scroll
-        bookPages.setText(listBook.get(position).getPages()+ " pages");
+
+        int pages = listBook.get(position).getPages();
+        if(pages > 0)
+            bookPages.setText(listBook.get(position).getPages()+ " pages");
 
         double rating = listBook.get(position).getRatings();
         if(rating > 0)
