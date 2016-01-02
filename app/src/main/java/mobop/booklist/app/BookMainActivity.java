@@ -92,7 +92,7 @@ public class BookMainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),
                         R.string.search_starting, Toast.LENGTH_SHORT).show();
 
-                mApiSearch.filter(query);
+                mApiSearch.filter(query, false);
 
                 changeSearch(mApiSearch);
 

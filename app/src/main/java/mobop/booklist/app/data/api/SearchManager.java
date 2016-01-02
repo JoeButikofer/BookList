@@ -36,6 +36,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     private final Context context;
     private String language;
     private String query;
+    private boolean ignoreLanguage; //ignore the language, used for the isbn search
 
     private static final String AUTHOR_SEARCH = "inauthor:";
     private static final String ISBN_SEARCH = "isbn:";
@@ -44,6 +45,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     public SearchManager(Context context) {
         this.context = context;
         this.language = PreferenceManager.getDefaultSharedPreferences(context).getString("search_language", "en"); //Retrieve the saved language or set the default language to english
+        this.ignoreLanguage = false;
 
         // Instantiate
         listBook = new LinkedList<>();
@@ -52,23 +54,25 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
     public void filterTitle(String text)
     {
-        filter(TITLE_SEARCH + text);
+        filter(TITLE_SEARCH + text, false);
     }
 
     public void filterAuthor(String text)
     {
-        filter(AUTHOR_SEARCH + text);
+        filter(AUTHOR_SEARCH + text, false);
     }
 
     public void filterIsbn(String text)
     {
-        filter(ISBN_SEARCH + text);
+        filter(ISBN_SEARCH + text, true);
     }
 
 
     @Override
-    public void filter(String text) {
+    public void filter(String text, boolean ignoreLanguage) {
         this.query = text;
+        this.ignoreLanguage = ignoreLanguage;
+
         reload();
     }
 
@@ -86,7 +90,13 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
             e.printStackTrace();
         }
 
-        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + encodedText + "&country=" +  Country.getUserCountry(context)+ "&langRestrict=" + language, new Response.Listener<JSONObject>() {
+        String languageString = "";
+        if(!this.ignoreLanguage)
+        {
+            languageString = "&langRestrict=" + language;
+        }
+
+        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + encodedText + "&country=" +  Country.getUserCountry(context)+ languageString, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
