@@ -61,6 +61,7 @@ public class BookMainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_wish);
         navigationView.setNavigationItemSelectedListener(this);
 
         setFragment(mBookListFragment);
@@ -169,12 +170,6 @@ public class BookMainActivity extends AppCompatActivity
             case R.id.nav_nav_favorites:
                 mDatabaseSearch.filterFavorite();
                 changeSerach(mDatabaseSearch);
-                break;
-            case R.id.nav_share:
-
-                break;
-            case R.id.nav_send:
-
                 break;
             default:
                 throw new IllegalStateException("ID " + menu_id + " unknown !");
