@@ -2,6 +2,8 @@ package mobop.booklist.app.data.api;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -88,6 +90,10 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    if (!response.has("items")) {
+                        Toast.makeText(context, "No result", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     //all the books returned
                     JSONArray volumes = response.getJSONArray("items");
 
@@ -107,6 +113,9 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
                 //nothing
             }
         });
+
+        Log.d("Api", jsonRequest.getUrl());
+        Log.d("Api", jsonRequest.toString());
 
         Queue.getInstance(context).add(jsonRequest);
         mBookAdapter.notifyDataSetChanged();

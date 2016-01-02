@@ -185,6 +185,7 @@ public class BookMainActivity extends AppCompatActivity
         if (scanResult != null) {
             scanResult.getFormatName();
             mApiSearch.filterIsbn(scanResult.getContents());
+            changeSearch(mApiSearch);
             Log.d("QRCODE", "'" + scanResult.getContents() + "' '" + scanResult.toString() + "'");
         } else {
             super.onActivityResult(requestCode, resultCode, data);
