@@ -147,9 +147,6 @@ public class BookMainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
-            case R.id.action_settings:
-
-                return true;
             case R.id.action_scan:
                 IntentIntegrator integrator = new IntentIntegrator(this);
                 integrator.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
