@@ -2,7 +2,6 @@ package mobop.booklist.app.data.api;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -12,7 +11,7 @@ import com.android.volley.toolbox.JsonRequest;
 
 import mobop.booklist.app.Queue;
 import mobop.booklist.app.adapter.BookAdapter;
-import mobop.booklist.app.data.generic.IAdatper;
+import mobop.booklist.app.data.generic.IAdapter;
 import mobop.booklist.app.data.generic.IApiSearchManager;
 import mobop.booklist.app.data.generic.book.IApiBook;
 import mobop.booklist.app.task.ParseJSONTask;
@@ -114,7 +113,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     }
 
     @Override
-    public IAdatper<IApiBook> adapter() {
+    public IAdapter<IApiBook> adapter() {
         return mBookAdapter;
     }
 

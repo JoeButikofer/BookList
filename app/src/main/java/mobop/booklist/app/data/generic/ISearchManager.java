@@ -5,5 +5,5 @@ public interface ISearchManager<T> {
     void reload();
     void clearFilter();
 
-    IAdatper<T> adapter();
+    IAdapter<T> adapter();
 }

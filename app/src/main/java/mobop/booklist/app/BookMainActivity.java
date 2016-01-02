@@ -4,8 +4,6 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -96,15 +94,14 @@ public class BookMainActivity extends AppCompatActivity
 
                 mApiSearch.filter(query);
 
-                changeSerach(mApiSearch);
+                changeSearch(mApiSearch);
 
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getApplicationContext(),
-                        R.string.search_error, Toast.LENGTH_SHORT).show();
+
                 return false;
             }
         });
@@ -122,7 +119,7 @@ public class BookMainActivity extends AppCompatActivity
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                changeSerach(previousManager);
+                changeSearch(previousManager);
                 return true; //true to allow close
             }
         });
@@ -159,26 +156,26 @@ public class BookMainActivity extends AppCompatActivity
         switch (menu_id) {
             case R.id.nav_wish:
                 mDatabaseSearch.filterWish();
-                changeSerach(mDatabaseSearch);
+                changeSearch(mDatabaseSearch);
                 break;
             case R.id.nav_library:
                 mDatabaseSearch.filterOwn();
-                changeSerach(mDatabaseSearch);
+                changeSearch(mDatabaseSearch);
                 break;
             case R.id.nav_to_read:
                 mDatabaseSearch.filterToRead();
-                changeSerach(mDatabaseSearch);
+                changeSearch(mDatabaseSearch);
                 break;
             case R.id.nav_nav_favorites:
                 mDatabaseSearch.filterFavorite();
-                changeSerach(mDatabaseSearch);
+                changeSearch(mDatabaseSearch);
                 break;
             default:
                 throw new IllegalStateException("ID " + menu_id + " unknown !");
         }
     }
 
-    private void changeSerach(ISearchManager<IApiBook> manager) {
+    private void changeSearch(ISearchManager<IApiBook> manager) {
         mBookListFragment.setManager(manager);
     }
 

@@ -12,7 +12,7 @@ import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.database.builder.Column;
 import mobop.booklist.app.data.database.builder.ColumnType;
 import mobop.booklist.app.data.database.builder.Table;
-import mobop.booklist.app.data.generic.IAdatper;
+import mobop.booklist.app.data.generic.IAdapter;
 import mobop.booklist.app.data.generic.IPersistentSearchManager;
 import mobop.booklist.app.data.generic.book.IApiBook;
 import mobop.booklist.app.data.generic.book.IPersistentBook;
@@ -164,7 +164,7 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
     }
 
     @Override
-    public IAdatper<IApiBook> adapter() {
+    public IAdapter<IApiBook> adapter() {
         return mAdapter;
     }
 

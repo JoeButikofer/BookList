@@ -13,13 +13,13 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import mobop.booklist.app.R;
-import mobop.booklist.app.data.generic.IAdatper;
+import mobop.booklist.app.data.generic.IAdapter;
 import mobop.booklist.app.data.generic.book.IApiBook;
 
 import java.util.List;
 
 //voir http://mickael-lt.developpez.com/tutoriels/android/personnaliser-listview/
-public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
+public class BookAdapter extends BaseAdapter implements IAdapter<IApiBook>
 {
     private final List<IApiBook> listBook;
     private final Context context;
