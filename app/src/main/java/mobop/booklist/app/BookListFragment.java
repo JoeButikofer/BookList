@@ -34,15 +34,7 @@ public class BookListFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        listViewBook.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                IApiBook selectedBook = mManager.adapter().getItem(position);
 
-                //TODO Long click : add/remove from lists
-                return true; //true if the callback consumed the long click, false otherwise
-            }
-        });
         listViewBook.setAdapter(mManager.adapter());
         return view;
     }
