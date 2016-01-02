@@ -19,15 +19,4 @@
             android:icon="@drawable/ic_star"
             android:title="@string/list_favorites" />
     </group>
-
-    <item android:title="Communicate TODO">
-        <menu>
-            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
-                android:title="Share TODO" />
-            <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
-                android:title="Send TODO" />
-        </menu>
-    </item>
-    -->
-
 </menu>

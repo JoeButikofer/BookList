@@ -182,12 +182,6 @@ public class BookMainActivity extends AppCompatActivity
                 mDatabaseSearch.filterFavorite();
                 changeSerach(mDatabaseSearch);
                 break;
-            case R.id.nav_share:
-
-                break;
-            case R.id.nav_send:
-
-                break;
             default:
                 throw new IllegalStateException("ID " + menu_id + " unknown !");
         }
