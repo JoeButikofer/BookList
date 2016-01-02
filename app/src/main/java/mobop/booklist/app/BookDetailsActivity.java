@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import mobop.booklist.app.data.database.BookManager;
 import mobop.booklist.app.data.generic.book.IApiBook;
 import mobop.booklist.app.data.generic.book.IPersistentBook;
@@ -56,7 +58,9 @@ public class BookDetailsActivity extends AppCompatActivity{
             bookRating.setRating((float)rating);
 
         TextView bookPages = (TextView) findViewById(R.id.book_pages);
-        bookPages.setText(mBook.getPages() + " pages");
+        int pages = mBook.getPages();
+        if(pages > 0)
+            bookPages.setText(mBook.getPages() + " pages");
 
         ImageView bookImage = (ImageView) findViewById(R.id.book_image);
         // Load image with Picasso http://square.github.io/picasso/
@@ -105,7 +109,11 @@ public class BookDetailsActivity extends AppCompatActivity{
         mEditNotes.setText(mBook.getNotes());
 
         TextView bookAuthors = (TextView)findViewById(R.id.book_authors);
-        bookAuthors.setText(TextUtils.join(", ", mBook.getAuthors()));
+        List<String> authors = mBook.getAuthors();
+        if (authors != null && authors.size() > 0)
+            bookAuthors.setText(TextUtils.join(", ", mBook.getAuthors()));
+        else
+            bookAuthors.setText("Auteur(s) non disponible(s)");
 
         TextView bookSummary = (TextView)findViewById(R.id.book_summary);
         String summary = mBook.getDescription();
