@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.database.builder.Column;
@@ -96,7 +95,6 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
         while (c.moveToNext()) {
             Book book = cursorToBook(c);
             mListbook.add(book);
-            Log.d("Database", "Read id = " + book.getId() + " / dbid = " + book.getDbId());
         }
         c.close();
         mAdapter.notifyDataSetChanged();
@@ -187,7 +185,6 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
     }
 
     private void add(IPersistentBook book) {
-        Log.d("Database", "insert book " + book.getId());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         toContentValue(values, book);
@@ -197,7 +194,6 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
     }
 
     private void update(IPersistentBook item) {
-        Log.d("Database", "update book " + item.getId());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         toContentValue(values, item);

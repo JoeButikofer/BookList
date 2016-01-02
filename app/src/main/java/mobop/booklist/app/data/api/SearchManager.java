@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SearchManager implements IApiSearchManager<IApiBook> {
 
@@ -37,6 +38,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     private String language;
     private String query;
     private boolean ignoreLanguage; //ignore the language, used for the isbn search
+    private AtomicInteger queryIdSequence = new AtomicInteger(Integer.MIN_VALUE);
 
     private static final String AUTHOR_SEARCH = "inauthor:";
     private static final String ISBN_SEARCH = "isbn:";
@@ -77,10 +79,12 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     }
 
     @Override
-    public void reload() {
+    public synchronized void reload() {
+
         if (query == null) {
             throw new IllegalStateException("Filters must no be null !");
         }
+        final int queryId = queryIdSequence.incrementAndGet();
         listBook.clear();
 
         String encodedText = "";
@@ -109,7 +113,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
                     for (int i = 0; i < volumes.length(); i++) {
                         //parse and add each book in the list
-                        new ParseJSONTask(listBook, mBookAdapter).execute((volumes.get(i)).toString());
+                        new ParseJSONTask(SearchManager.this, queryId).execute((volumes.get(i)).toString());
                     }
 
                 } catch (JSONException e) {
@@ -146,5 +150,12 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     {
         this.language = languageCode;
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("search_language", languageCode).apply(); //Save this language
+    }
+
+    public synchronized void add(IApiBook result, int queryId) {
+        if (queryId == queryIdSequence.get()) {
+            listBook.add(result);
+            mBookAdapter.notifyDataSetChanged();
+        }
     }
 }

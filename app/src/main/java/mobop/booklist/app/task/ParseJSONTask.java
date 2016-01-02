@@ -1,34 +1,30 @@
 package mobop.booklist.app.task;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mobop.booklist.app.adapter.BookAdapter;
 import mobop.booklist.app.data.api.ApiBook;
-import mobop.booklist.app.data.generic.book.IApiBook;
+import mobop.booklist.app.data.api.SearchManager;
 
 import java.io.IOException;
-import java.util.List;
 
 public class ParseJSONTask extends AsyncTask<String, Void, ApiBook> {
 
-    private final ObjectMapper mapper;
-    private final List<IApiBook> mListBook;
-    private final BookAdapter mBookAdapter;
+    private static final ObjectMapper mapper = new ObjectMapper();
 
-    public ParseJSONTask(List<IApiBook> listBook, BookAdapter bookAdapter) {
-        this.mapper = new ObjectMapper();
-        this.mListBook = listBook;
-        this.mBookAdapter = bookAdapter;
+    private final SearchManager searchManager;
+    private final int queryId;
+
+    public ParseJSONTask(SearchManager searchManager, int queryId) {
+        this.searchManager = searchManager;
+        this.queryId = queryId;
     }
 
     @Override
     protected ApiBook doInBackground(String... params) {
         try {
             ApiBook book = mapper.readValue(params[0], ApiBook.class);
-            Log.d("Api", book.toString());
             return book;
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,8 +35,7 @@ public class ParseJSONTask extends AsyncTask<String, Void, ApiBook> {
     @Override
     protected void onPostExecute(ApiBook result) {
         if (result != null) {
-            mListBook.add(result);
-            mBookAdapter.notifyDataSetChanged();
+            searchManager.add(result, queryId);
         }
     }
 }

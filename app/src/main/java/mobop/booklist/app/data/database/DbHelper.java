@@ -1,12 +1,9 @@
 package mobop.booklist.app.data.database;
 
-    import android.content.Context;
-    import android.database.sqlite.SQLiteDatabase;
-    import android.database.sqlite.SQLiteOpenHelper;
-    import android.util.Log;
-    import mobop.booklist.app.data.database.builder.Column;
-    import mobop.booklist.app.data.database.builder.ColumnType;
-    import mobop.booklist.app.data.database.builder.Table;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import mobop.booklist.app.data.database.builder.Table;
 
 public class DbHelper extends SQLiteOpenHelper {
     private Context context;
@@ -43,7 +40,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("Database create", getCreateSql());
         db.execSQL(getCreateSql());
     }
 
@@ -51,7 +47,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        Log.d("Database drop", getDropSql());
         db.execSQL(getDropSql());
         onCreate(db);
     }
