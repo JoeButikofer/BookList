@@ -2,7 +2,10 @@ package mobop.booklist.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
@@ -101,6 +104,16 @@ public class BookDetailsActivity extends AppCompatActivity{
         mEditNotes = (EditText) findViewById(R.id.edit_notes);
         mEditNotes.setText(mBook.getNotes());
 
+        TextView bookAuthors = (TextView)findViewById(R.id.book_authors);
+        bookAuthors.setText(TextUtils.join(", ", mBook.getAuthors()));
+
+        TextView bookSummary = (TextView)findViewById(R.id.book_summary);
+        String summary = mBook.getDescription();
+
+        if(summary == null || summary.length() < 0)
+            summary = "Pas de résumé ou de description disponible pour ce livre";
+
+        bookSummary.setText(summary);
     }
 
 

@@ -268,6 +268,26 @@ public class ApiBook implements IApiBook {
         this.volumeInfo.getImageLinks().setThumbnail(value);
     }
 
+    @Override
+    public List<String> getAuthors() {
+        return volumeInfo.getAuthors();
+    }
+
+    @Override
+    public void setAuthors(List<String> authors) {
+        volumeInfo.setAuthors(authors);
+    }
+
+    @Override
+    public String getDescription() {
+        return volumeInfo.getDescription();
+    }
+
+    @Override
+    public void setDescription(String description) {
+        volumeInfo.setDescription(description);
+    }
+
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package mobop.booklist.app.data.generic.book;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface IApiBook extends Serializable { //Parcelable would be more efficient but we don't need it for just one object
 
@@ -22,6 +23,9 @@ public interface IApiBook extends Serializable { //Parcelable would be more effi
     String getImagePath();
     void setImagePath(String value);
 
-    //TODO maybe Author(s), summary, ...
+    List<String> getAuthors();
+    void setAuthors(List<String> authors);
 
+    String getDescription();
+    void setDescription(String description);
 }

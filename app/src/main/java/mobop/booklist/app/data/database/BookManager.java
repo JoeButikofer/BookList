@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import mobop.booklist.app.adapter.BookAdapter;
@@ -18,6 +19,7 @@ import mobop.booklist.app.data.generic.book.IPersistentBook;
 import mobop.booklist.app.data.generic.book.IPersistentBookManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BookManager implements IPersistentBookManager, IPersistentSearchManager<IApiBook> {
@@ -28,6 +30,8 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
     private static final String COLUMN_GENRE = "genre";
     private static final String COLUMN_RATING = "rating";
     private static final String COLUMN_IMAGE_PATH = "image_path";
+    private static final String COLUMN_AUTHORS = "authors";
+    private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_NOTES = "notes";
     private static final String COLUMN_TO_READ = "to_read";
     private static final String COLUMN_OWN = "own";
@@ -53,6 +57,8 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
             , new Column(COLUMN_PAGES, ColumnType.Int)
             , new Column(COLUMN_RATING, ColumnType.Int)
             , new Column(COLUMN_IMAGE_PATH, ColumnType.Text)
+            , new Column(COLUMN_AUTHORS, ColumnType.Text)
+            , new Column(COLUMN_DESCRIPTION, ColumnType.Text)
             , new Column(COLUMN_NOTES, ColumnType.Text)
             , new Column(COLUMN_TO_READ, ColumnType.Bool)
             , new Column(COLUMN_OWN, ColumnType.Bool)
@@ -93,11 +99,15 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
         book.setPages(c.getInt(4));
         book.setRatings(c.getInt(5));
         book.setImagePath(c.getString(6));
-        book.setNotes(c.getString(7));
-        book.setToRead(dbToBool(c.getInt(8)));
-        book.setOwn(dbToBool(c.getInt(9)));
-        book.setWish(dbToBool(c.getInt(10)));
-        book.setFavorite(dbToBool(c.getInt(11)));
+
+        String[] authors = c.getString(7).split(";");
+        book.setAuthors(Arrays.asList(authors));
+        book.setDescription(c.getString(8));
+        book.setNotes(c.getString(9));
+        book.setToRead(dbToBool(c.getInt(10)));
+        book.setOwn(dbToBool(c.getInt(11)));
+        book.setWish(dbToBool(c.getInt(12)));
+        book.setFavorite(dbToBool(c.getInt(13)));
         return book;
     }
     private static void loadAllInfomations(IPersistentBook to, IApiBook item) {
@@ -113,6 +123,8 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
         to.setPages(item.getPages());
         to.setRatings(item.getRatings());
         to.setImagePath(item.getImagePath());
+        to.setAuthors(item.getAuthors());
+        to.setDescription(item.getDescription());
     }
 
     private static void loadPersistentInformations(IPersistentBook to, IPersistentBook item) {
@@ -150,6 +162,10 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
         values.put(COLUMN_PAGES, item.getPages());
         values.put(COLUMN_RATING, item.getRatings());
         values.put(COLUMN_IMAGE_PATH, item.getImagePath());
+        List<String> authors = item.getAuthors();
+        String stringAuthors = TextUtils.join(";", authors);
+        values.put(COLUMN_AUTHORS, stringAuthors);
+        values.put(COLUMN_DESCRIPTION, item.getDescription());
         values.put(COLUMN_NOTES, item.getNotes());
         values.put(COLUMN_TO_READ, boolToDb(item.isToRead()));
         values.put(COLUMN_OWN, boolToDb(item.isOwn()));

@@ -25,6 +25,7 @@
     <string name="book_note_hint">Notes...</string>
 
     <string name="dialog_language_message">Choix de la langue de recherche</string>
+    <string name="lbl_book_authors">Par :</string>
     <string-array
         name="string_array_language">
         <item>anglais</item>

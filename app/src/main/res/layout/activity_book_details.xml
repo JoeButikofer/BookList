@@ -22,6 +22,19 @@
             <!-- Image and details of the book -->
             <include layout="@layout/view_book" />
 
+            <!-- Authors -->
+            <TextView
+                android:id="@+id/lbl_book_authors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_book_authors"/>
+
+            <TextView
+                android:id="@+id/book_authors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
             <!-- Markers -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,7 +79,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:minLines="3"
+                android:minLines="1"
                 android:gravity="top|left"
                 android:id="@+id/edit_notes"
                 android:layout_width="match_parent"

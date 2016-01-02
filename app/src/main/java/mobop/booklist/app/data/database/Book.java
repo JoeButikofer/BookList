@@ -1,5 +1,7 @@
 package mobop.booklist.app.data.database;
 
+import java.util.List;
+
 import mobop.booklist.app.data.generic.book.IPersistentBook;
 
 public class Book implements IPersistentBook {
@@ -9,6 +11,8 @@ public class Book implements IPersistentBook {
     private int pages;
     private double ratings;
     private String imagePath;
+    private List<String> authors;
+    private String description;
     private String notes;
     private boolean toRead;
     private boolean own;
@@ -89,6 +93,26 @@ public class Book implements IPersistentBook {
     @Override
     public void setImagePath(String value) {
         imagePath = value;
+    }
+
+    @Override
+    public List<String> getAuthors() {
+        return authors;
+    }
+
+    @Override
+    public void setAuthors(List<String> value) {
+        authors = value;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String value) {
+        description = value;
     }
 
     @Override
