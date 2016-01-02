@@ -13,8 +13,8 @@
     <string name="favorite">Favoris</string>
 
     <string name="navigation_drawer_title">Listes</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>
+    <string name="navigation_drawer_close">Fermer le panneau de navigation</string>
 
     <string name="list_wish">Liste de souhait</string>
     <string name="list_library">Bibliothèque</string>
