@@ -77,7 +77,9 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
         Picasso.with(context).load(listBook.get(position).getImagePath()).into(bookImage);
 
         bookName.setText(listBook.get(position).getName());
+        bookName.setSelected(true); //For the auto scroll
         bookGenre.setText(listBook.get(position).getGenre());
+        bookGenre.setSelected(true); //For the auto scroll
         bookPages.setText(listBook.get(position).getPages()+ " pages");
 
         double rating = listBook.get(position).getRatings();

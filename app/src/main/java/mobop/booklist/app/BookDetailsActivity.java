@@ -40,9 +40,11 @@ public class BookDetailsActivity extends AppCompatActivity{
 
         TextView bookName = (TextView) findViewById(R.id.book_name);
         bookName.setText(mBook.getName());
+        bookName.setSelected(true); //For the auto scroll
 
         TextView bookGenre = (TextView) findViewById(R.id.book_genre);
         bookGenre.setText(mBook.getGenre());
+        bookGenre.setSelected(true); //For the auto scroll
 
         RatingBar bookRating = (RatingBar) findViewById(R.id.book_ratings);
 
