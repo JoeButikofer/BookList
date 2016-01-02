@@ -34,6 +34,7 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
     private final List<IApiBook> listBook;
     private final Context context;
     private String language;
+    private String query;
 
     private static final String AUTHOR_SEARCH = "inauthor:";
     private static final String ISBN_SEARCH = "isbn:";
@@ -66,12 +67,20 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
 
     @Override
     public void filter(String text) {
+        this.query = text;
+        reload();
+    }
 
+    @Override
+    public void reload() {
+        if (query == null) {
+            throw new IllegalStateException("Filters must no be null !");
+        }
         listBook.clear();
 
         String encodedText = "";
         try {
-            encodedText = URLEncoder.encode(text, "UTF-8");
+            encodedText = URLEncoder.encode(query, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

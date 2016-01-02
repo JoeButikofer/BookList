@@ -42,6 +42,9 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
     private final DbHelper mDbHelper;
     private final BookAdapter mAdapter;
     private final List<IApiBook> mListbook;
+    private String filterColumns = null;
+    private String[] filterValues = null;
+
 
     public BookManager(Context context) {
         mDbHelper = new DbHelper(context);
@@ -70,12 +73,22 @@ public class BookManager implements IPersistentBookManager, IPersistentSearchMan
     }
 
     private void filter(String columnsWhere, String[] valuesWhere) {
+        filterColumns = columnsWhere;
+        filterValues = valuesWhere;
+        reload();
+    }
+
+    @Override
+    public void reload() {
+        if (filterColumns == null || filterValues == null) {
+            throw new IllegalStateException("Filters must no be null !");
+        }
         mListbook.clear();
         Cursor c = mDbHelper.getReadableDatabase().query(
                 TABLE.getName(),                // The table to query
                 TABLE.getColumnsNames(),        // The columns to return
-                columnsWhere,                   // The columns for the WHERE clause
-                valuesWhere,                    // The values for the WHERE clause
+                filterColumns,                   // The columns for the WHERE clause
+                filterValues,                    // The values for the WHERE clause
                 null,                           // don't group the rows
                 null,                           // don't filter by row groups
                 null                            // The sort order
