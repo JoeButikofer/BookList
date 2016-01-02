@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -55,13 +54,10 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
 
         RelativeLayout layoutItem;
 
-        if(convertView == null)
-        {
+        if(convertView == null) {
             layoutItem = (RelativeLayout) inflater.inflate(R.layout.view_book, parent, false);
-        }
-        else
-        {
-            layoutItem = (RelativeLayout)convertView;
+        } else {
+            layoutItem = (RelativeLayout) convertView;
         }
 
         //Get the fields
@@ -72,22 +68,25 @@ public class BookAdapter extends BaseAdapter implements IAdatper<IApiBook>
         RatingBar bookRatings = (RatingBar) layoutItem.findViewById(R.id.book_ratings);
 
         //Fills it
+        IApiBook book = listBook.get(position);
 
         // Load image with Picasso : http://square.github.io/picasso/
-        Picasso.with(context).load(listBook.get(position).getImagePath()).into(bookImage);
+        Picasso.with(context).load(book.getImagePath()).into(bookImage);
 
-        bookName.setText(listBook.get(position).getName());
+        bookName.setText(book.getName());
         bookName.setSelected(true); //For the auto scroll
-        bookGenre.setText(listBook.get(position).getGenre());
+        bookGenre.setText(book.getGenre());
         bookGenre.setSelected(true); //For the auto scroll
 
-        int pages = listBook.get(position).getPages();
-        if(pages > 0)
-            bookPages.setText(listBook.get(position).getPages()+ " pages");
+        int pages = book.getPages();
+        if(pages > 0) {
+            bookPages.setText(String.format(context.getString(R.string.book_pages), pages));
+        }
 
-        double rating = listBook.get(position).getRatings();
-        if(rating > 0)
-            bookRatings.setRating((float)rating);
+        double rating = book.getRatings();
+        if(rating > 0) {
+            bookRatings.setRating((float) rating);
+        }
 
         return layoutItem;
     }

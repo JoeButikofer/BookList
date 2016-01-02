@@ -26,6 +26,10 @@
 
     <string name="dialog_language_message">Choix de la langue de recherche</string>
     <string name="lbl_book_authors">Par :</string>
+    <string name="no_summary">Pas de résumé ou de description disponible pour ce livre</string>
+    <string name="book_pages">%d pages</string>
+    <string name="search_error">Search error</string>
+    <string name="search_starting">search...</string>
     <string-array
         name="string_array_language">
         <item>anglais</item>

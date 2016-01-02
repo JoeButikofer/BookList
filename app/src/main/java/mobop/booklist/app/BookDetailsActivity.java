@@ -52,11 +52,11 @@ public class BookDetailsActivity extends AppCompatActivity{
         RatingBar bookRating = (RatingBar) findViewById(R.id.book_ratings);
 
         double rating = mBook.getRatings();
-        if(rating > 0)
-            bookRating.setRating((float)rating);
-
+        if(rating > 0) {
+            bookRating.setRating((float) rating);
+        }
         TextView bookPages = (TextView) findViewById(R.id.book_pages);
-        bookPages.setText(mBook.getPages() + " pages");
+        bookPages.setText(String.format(getString(R.string.book_pages), mBook.getPages()));
 
         ImageView bookImage = (ImageView) findViewById(R.id.book_image);
         // Load image with Picasso http://square.github.io/picasso/
@@ -110,8 +110,9 @@ public class BookDetailsActivity extends AppCompatActivity{
         TextView bookSummary = (TextView)findViewById(R.id.book_summary);
         String summary = mBook.getDescription();
 
-        if(summary == null || summary.length() < 0)
-            summary = "Pas de résumé ou de description disponible pour ce livre";
+        if(summary == null || summary.length() < 0) {
+            summary = getString(R.string.no_summary);
+        }
 
         bookSummary.setText(summary);
     }
@@ -152,7 +153,7 @@ public class BookDetailsActivity extends AppCompatActivity{
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (item.getItemId()== android.R.id.home) {
+        if (id == android.R.id.home) {
             finish();
             return true;
         }
