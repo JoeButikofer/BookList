@@ -39,6 +39,12 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mManager.reload();
+    }
+
     public void setManager(ISearchManager<IApiBook> manager) {
         this.mManager = manager;
         if (listViewBook != null) {
