@@ -12,7 +12,7 @@ import mobop.booklist.app.data.generic.book.IApiBook;
 import java.io.IOException;
 import java.util.List;
 
-public class ParseJSONTask extends AsyncTask<String, Void, Boolean> {
+public class ParseJSONTask extends AsyncTask<String, Void, ApiBook> {
 
     private final ObjectMapper mapper;
     private final List<IApiBook> mListBook;
@@ -25,21 +25,21 @@ public class ParseJSONTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected ApiBook doInBackground(String... params) {
         try {
             ApiBook book = mapper.readValue(params[0], ApiBook.class);
             Log.d("Api", book.toString());
-            mListBook.add(book);
-            return true;
+            return book;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
-        if (result) {
+    protected void onPostExecute(ApiBook result) {
+        if (result != null) {
+            mListBook.add(result);
             mBookAdapter.notifyDataSetChanged();
         }
     }
