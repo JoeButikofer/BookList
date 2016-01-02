@@ -5,12 +5,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -49,15 +46,6 @@ public class BookMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_book_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         mApiSearch = new SearchManager(this);
         {
@@ -101,7 +89,7 @@ public class BookMainActivity extends AppCompatActivity
             public boolean onQueryTextSubmit(String query) {
 
                 Toast.makeText(getApplicationContext(),
-                        "search...", Toast.LENGTH_SHORT).show();
+                        R.string.search_starting, Toast.LENGTH_SHORT).show();
 
                 mApiSearch.filter(query);
 
@@ -112,7 +100,8 @@ public class BookMainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //nothing
+                Toast.makeText(getApplicationContext(),
+                        R.string.search_error, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -124,7 +113,6 @@ public class BookMainActivity extends AppCompatActivity
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                //nothing
                 previousManager = mBookListFragment.getManager();
                 return true; //true to allow open
             }
