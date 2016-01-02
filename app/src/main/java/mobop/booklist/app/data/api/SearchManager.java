@@ -9,7 +9,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import mobop.booklist.app.Queue;
 import mobop.booklist.app.adapter.BookAdapter;
@@ -17,6 +16,7 @@ import mobop.booklist.app.data.generic.IAdatper;
 import mobop.booklist.app.data.generic.IApiSearchManager;
 import mobop.booklist.app.data.generic.book.IApiBook;
 import mobop.booklist.app.task.ParseJSONTask;
+import mobop.booklist.app.tools.Country;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,19 +76,16 @@ public class SearchManager implements IApiSearchManager<IApiBook> {
             e.printStackTrace();
         }
 
-        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + encodedText + "&langRestrict=" + language, new Response.Listener<JSONObject>() {
+        JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, API_URL + encodedText + "&country=" +  Country.getUserCountry(context)+ "&langRestrict=" + language, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
-                ObjectMapper mapper = new ObjectMapper();
-
                 try {
                     //all the books returned
                     JSONArray volumes = response.getJSONArray("items");
 
                     for (int i = 0; i < volumes.length(); i++) {
                         //parse and add each book in the list
-                        new ParseJSONTask(listBook, mBookAdapter).execute(((JSONObject) volumes.get(i)).toString());
+                        new ParseJSONTask(listBook, mBookAdapter).execute((volumes.get(i)).toString());
                     }
 
                 } catch (JSONException e) {
