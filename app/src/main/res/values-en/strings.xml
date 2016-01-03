@@ -19,6 +19,7 @@
     <string name="list_wish">Wish list</string>
     <string name="list_to_read">To read</string>
     <string name="list_favorites">Favorites</string>
+    <string name="list_library">Library</string>
     <string name="book_note_hint">Notes...</string>
 
     <string name="lbl_book_authors">By :</string>
@@ -28,13 +29,12 @@
     <string name="search_starting">search...</string>
     <string-array
         name="string_array_language">
-        <item>anglais</item>
-        <item>français</item>
-        <item>allemand</item>
-        <item>espagnol</item>
-        <item>japonais</item>
+        <item>english</item>
+        <item>french</item>
+        <item>german</item>
+        <item>spanish</item>
+        <item>japanese</item>
     </string-array>
-    <string name="list_library">Library</string>
     <string name="dialog_language_message">Choice of search language</string>
 
 </resources>

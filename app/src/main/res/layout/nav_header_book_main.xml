@@ -15,7 +15,7 @@
         android:src="@drawable/ic_book_open" android:id="@+id/imageView" />
 
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing" android:text="Book List"
+        android:paddingTop="@dimen/nav_header_vertical_spacing" android:text="@string/app_full_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

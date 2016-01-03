@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.Stack;
+
 import mobop.booklist.app.data.api.SearchManager;
 import mobop.booklist.app.data.database.BookManager;
 import mobop.booklist.app.data.generic.IApiSearchManager;
@@ -37,11 +39,20 @@ public class BookMainActivity extends AppCompatActivity
     private IPersistentSearchManager<IApiBook> mDatabaseSearch;
     private IPersistentBookManager mPersistentManager;
 
+    private BeforeIsbnScanState mBeforeIsbnScanState = null;
+    private NavigationView mNavigationView;
+    private int mCurrentMenuId;
+
+    private static class BeforeIsbnScanState {
+        public CharSequence title;
+        public int menuId;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Queue.getInstance(this);
+        mCurrentMenuId = R.id.nav_wish;
         mBookListFragment = new BookListFragment();
         setContentView(R.layout.activity_book_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -60,12 +71,12 @@ public class BookMainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_wish);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setCheckedItem(mCurrentMenuId);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         setFragment(mBookListFragment);
-        loadMenu(R.id.nav_wish);
+        loadMenu(mCurrentMenuId);
     }
 
     @Override
@@ -73,6 +84,17 @@ public class BookMainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (mBeforeIsbnScanState != null) {
+            setTitle(mBeforeIsbnScanState.title);
+            mNavigationView.setCheckedItem(mBeforeIsbnScanState.menuId);
+            loadMenu(mBeforeIsbnScanState.menuId);
+
+            for (int i = 0 ; i < mNavigationView.getMenu().size() ; i++) {
+                if (mNavigationView.getMenu().getItem(i).getItemId() == mBeforeIsbnScanState.menuId) {
+                    mNavigationView.getMenu().getItem(i).setChecked(true);
+                }
+            }
+            mBeforeIsbnScanState = null;
         } else {
             super.onBackPressed();
         }
@@ -153,22 +175,27 @@ public class BookMainActivity extends AppCompatActivity
     }
 
     private void loadMenu(int menu_id) {
+        mCurrentMenuId = menu_id;
         switch (menu_id) {
             case R.id.nav_wish:
                 mDatabaseSearch.filterWish();
                 changeSearch(mDatabaseSearch);
+                setTitle(R.string.list_wish);
                 break;
             case R.id.nav_library:
                 mDatabaseSearch.filterOwn();
                 changeSearch(mDatabaseSearch);
+                setTitle(R.string.list_library);
                 break;
             case R.id.nav_to_read:
                 mDatabaseSearch.filterToRead();
                 changeSearch(mDatabaseSearch);
+                setTitle(R.string.list_to_read);
                 break;
             case R.id.nav_nav_favorites:
                 mDatabaseSearch.filterFavorite();
                 changeSearch(mDatabaseSearch);
+                setTitle(R.string.list_favorites);
                 break;
             default:
                 throw new IllegalStateException("ID " + menu_id + " unknown !");
@@ -185,6 +212,16 @@ public class BookMainActivity extends AppCompatActivity
         if (scanResult != null) {
             scanResult.getFormatName();
             mApiSearch.filterIsbn(scanResult.getContents());
+            if (mBeforeIsbnScanState == null) {
+                mBeforeIsbnScanState = new BeforeIsbnScanState();
+                mBeforeIsbnScanState.title = getTitle();
+                mBeforeIsbnScanState.menuId = mCurrentMenuId;
+
+            }
+            for (int i = 0 ; i < mNavigationView.getMenu().size() ; i++) {
+                mNavigationView.getMenu().getItem(i).setChecked(false);
+            }
+            setTitle(scanResult.getContents());
             changeSearch(mApiSearch);
             Log.d("QRCODE", "'" + scanResult.getContents() + "' '" + scanResult.toString() + "'");
         } else {
@@ -197,7 +234,6 @@ public class BookMainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         loadMenu(item.getItemId());
